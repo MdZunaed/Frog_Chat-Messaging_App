@@ -103,6 +103,9 @@ class _InboxNavbarState extends State<InboxNavbar> {
             margin: const EdgeInsets.symmetric(horizontal: 10),
             height: 50.h,
             child: TextField(
+              // expands: true,
+              // minLines: null,
+              // maxLines: null,
               style: kTitleStyle,
               decoration: InputDecoration(
                 isDense: true,

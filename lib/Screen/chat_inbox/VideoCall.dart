@@ -46,7 +46,7 @@ class _VideoCallState extends State<VideoCall> {
         alignment: Alignment.bottomCenter,
         height: 85,
         width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+        padding:const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
         decoration: const BoxDecoration(
           color: kDarkColor,
           borderRadius: BorderRadius.only(

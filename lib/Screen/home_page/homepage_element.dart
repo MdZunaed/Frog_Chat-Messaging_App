@@ -79,7 +79,7 @@ class ActiveNow extends StatelessWidget {
                   image: AssetImage("images/" + imgName), fit: BoxFit.cover)),
         ),
         SizedBox(height: 5.h),
-        Text(name, style: kTextStyle),
+        Text(name, textAlign: TextAlign.center, style: kTextStyle),
       ],
     );
   }

@@ -35,9 +35,22 @@ class _AccountInfoState extends State<AccountInfo> {
                       width: 45.w,
                       decoration: const BoxDecoration(
                           color: kPrimaryColor, shape: BoxShape.circle),
-                      child: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.edit_document)))),
+                      child: PopupMenuButton(
+                          icon: const Icon(Icons.edit_document,
+                              color: kDarkColor),
+                          color: kPrimaryColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          itemBuilder: (context) => [
+                                PopupMenuItem(
+                                    child: Text("Take Picture",
+                                        style: kTitleStyle.copyWith(
+                                            color: kDarkColor))),
+                                PopupMenuItem(
+                                    child: Text("From Gallery",
+                                        style: kTitleStyle.copyWith(
+                                            color: kDarkColor))),
+                              ]))),
             ]),
           ),
           gap,
