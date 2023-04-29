@@ -1,9 +1,13 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frog_chat/splash_screen.dart';
 import 'package:frog_chat/style.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(const MyApp());
 }
 
@@ -19,6 +23,7 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
           theme: ThemeData(
+            scaffoldBackgroundColor: kBgColor,
             colorScheme: ColorScheme.fromSwatch().copyWith(
                 primary: kPrimaryColor,
                 secondary: kSecondayColor,

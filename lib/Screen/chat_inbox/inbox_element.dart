@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:frog_chat/Screen/chat_inbox/VideoCall.dart';
 import 'package:frog_chat/Screen/chat_inbox/audio_call.dart';
 import 'package:frog_chat/Screen/chat_inbox/person_info.dart';
@@ -97,7 +98,42 @@ class _InboxNavbarState extends State<InboxNavbar> {
         IconButton(
             icon: Icon(Icons.attach_file_rounded,
                 color: kPrimaryColor, size: 30.r),
-            onPressed: () {}),
+            onPressed: () {
+              showModalBottomSheet(
+                backgroundColor: Colors.transparent,
+                context: context,
+                builder: (context) => Container(
+                  height: 240.h,
+                  decoration: const BoxDecoration(
+                      color: kBgColor,
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(30))),
+                  child: Padding(
+                    padding: const EdgeInsets.all(15).h,
+                    child: Column(
+                      children: [
+                        Text("Share Content", style: kTitleStyle),
+                        const SizedBox(height: 15),
+                        SheetItem(
+                            icon: Icons.camera_alt,
+                            text: "Camera",
+                            onTap: () {}),
+                        const SizedBox(height: 15),
+                        SheetItem(
+                            icon: Icons.image,
+                            text: "From Gallery",
+                            onTap: () {}),
+                        const SizedBox(height: 15),
+                        SheetItem(
+                            icon: Icons.file_copy,
+                            text: "Send Documents",
+                            onTap: () {}),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }),
         Expanded(
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -126,6 +162,37 @@ class _InboxNavbarState extends State<InboxNavbar> {
             icon: Icon(Icons.send, color: kPrimaryColor, size: 30.r),
             onPressed: () {}),
       ]),
+    );
+  }
+}
+
+class SheetItem extends StatelessWidget {
+  IconData icon;
+  String text;
+  VoidCallback onTap;
+  SheetItem(
+      {super.key, required this.icon, required this.text, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      //onTap: onTap,
+      onTap: () => Fluttertoast.showToast(
+          msg: "Not available right now",
+          textColor: kDarkColor,
+          backgroundColor: kPrimaryColor),
+      child: Row(
+        children: [
+          Container(
+              height: 45.h,
+              width: 45.w,
+              decoration: const BoxDecoration(
+                  shape: BoxShape.circle, color: kDarkColor),
+              child: Icon(icon, color: kPrimaryColor)),
+          gaph,
+          Text(text, style: kHeadingStyle.copyWith(fontSize: 20.sp))
+        ],
+      ),
     );
   }
 }

@@ -5,8 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../style.dart';
 
 class PasswordField extends StatefulWidget {
-  PasswordField({required this.hintText, super.key});
+  PasswordField({required this.controller, required this.hintText, super.key});
   String hintText;
+  TextEditingController controller;
 
   @override
   State<PasswordField> createState() => _PasswordFieldState();
@@ -25,6 +26,7 @@ class _PasswordFieldState extends State<PasswordField> {
       ),
       child: Center(
         child: TextField(
+          controller: widget.controller,
           obscureText: isObscure,
           cursorColor: kPrimaryColor,
           style: const TextStyle(color: kWhiteColor),

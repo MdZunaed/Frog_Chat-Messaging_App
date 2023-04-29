@@ -4,8 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frog_chat/style.dart';
 
 class InputField extends StatelessWidget {
-  InputField({required this.text, super.key});
+  InputField({this.controller, required this.text, super.key});
   String text;
+  TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +18,7 @@ class InputField extends StatelessWidget {
       ),
       child: Center(
         child: TextField(
+          controller: controller,
           cursorColor: kPrimaryColor,
           style: const TextStyle(color: kWhiteColor),
           decoration: InputDecoration(

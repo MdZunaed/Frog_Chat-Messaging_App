@@ -32,27 +32,27 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         actions: [BarImage(imageName: "sayed.png")],
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10.w),
+        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10),
         child: Column(
           children: [
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 10.h),
-              height: 80.h,
-              child: ListView(
-                physics: const BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                children: [
-                  ActiveNow(name: "Abu Sayed", imgName: "sayed.png"),
-                  ActiveNow(name: "Md Zunaed", imgName: "zunu.jpg"),
-                  ActiveNow(name: "Md Mizan", imgName: "mizan.jpg"),
-                  ActiveNow(name: "Alif Sarkar", imgName: "alif.jpg"),
-                  ActiveNow(name: "Mahmudul", imgName: "buira.jpg"),
-                  ActiveNow(name: "Md Zunaed", imgName: "zunu.jpg"),
-                  ActiveNow(name: "Md Mizan", imgName: "mizan.jpg"),
-                  ActiveNow(name: "Mahmudul", imgName: "buira.jpg"),
-                ],
-              ),
-            ),
+            // Container(
+            //   margin: EdgeInsets.symmetric(vertical: 10.h),
+            //   height: 80.h,
+            //   child: ListView(
+            //     physics: const BouncingScrollPhysics(),
+            //     scrollDirection: Axis.horizontal,
+            //     children: [
+            //       ActiveNow(name: "Abu Sayed", imgName: "sayed.png"),
+            //       ActiveNow(name: "Md Zunaed", imgName: "zunu.jpg"),
+            //       ActiveNow(name: "Md Mizan", imgName: "mizan.jpg"),
+            //       ActiveNow(name: "Alif Sarkar", imgName: "alif.jpg"),
+            //       ActiveNow(name: "Mahmudul", imgName: "buira.jpg"),
+            //       ActiveNow(name: "Md Zunaed", imgName: "zunu.jpg"),
+            //       ActiveNow(name: "Md Mizan", imgName: "mizan.jpg"),
+            //       ActiveNow(name: "Mahmudul", imgName: "buira.jpg"),
+            //     ],
+            //   ),
+            // ),
             TabBar(
                 controller: tabController,
                 isScrollable: true,

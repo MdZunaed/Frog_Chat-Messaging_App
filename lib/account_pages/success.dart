@@ -36,6 +36,7 @@ class _SuccessPageState extends State<SuccessPage> {
             InkWell(
               child: Button(text: "Go to Home Page"),
               onTap: () {
+                Navigator.popUntil(context, (route) => route.isFirst);
                 Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => const HomePage()));
               },

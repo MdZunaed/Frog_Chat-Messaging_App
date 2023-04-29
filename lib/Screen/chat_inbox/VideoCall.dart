@@ -46,7 +46,7 @@ class _VideoCallState extends State<VideoCall> {
         alignment: Alignment.bottomCenter,
         height: 85,
         width: MediaQuery.of(context).size.width,
-        padding:const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
         decoration: const BoxDecoration(
           color: kDarkColor,
           borderRadius: BorderRadius.only(
@@ -60,7 +60,7 @@ class _VideoCallState extends State<VideoCall> {
                 icon: Icons.video_call,
                 color: "enabled",
                 pressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: ((context) => const AudioCall())));
@@ -72,7 +72,7 @@ class _VideoCallState extends State<VideoCall> {
                 icon: Icons.call,
                 color: "end",
                 pressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const ChatInbox()));

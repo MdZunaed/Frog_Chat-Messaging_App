@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1053535629344",
+    "project_id": "frog-chat-app",
+    "storage_bucket": "frog-chat-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1053535629344:android:49f3a3af74332becf08c45",
+        "android_client_info": {
+          "package_name": "com.example.frog_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1053535629344-r9aaikq7nfmj0b1roun2q5pqf91m4a61.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmUuC2XCl25mG-bSLmIIEJCuAdgOwXeuY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1053535629344-r9aaikq7nfmj0b1roun2q5pqf91m4a61.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

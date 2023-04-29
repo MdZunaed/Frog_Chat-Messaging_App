@@ -53,7 +53,7 @@ class _AudioCallState extends State<AudioCall> {
                 icon: Icons.video_call,
                 color: "disabled",
                 pressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: ((context) => const VideoCall())));
@@ -65,7 +65,7 @@ class _AudioCallState extends State<AudioCall> {
                 icon: Icons.call,
                 color: "end",
                 pressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const ChatInbox()));
