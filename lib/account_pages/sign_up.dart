@@ -15,7 +15,7 @@ import 'package:image_picker/image_picker.dart';
 import 'input_fields/password.dart';
 
 class SignUp extends StatefulWidget {
-  SignUp({super.key});
+  const SignUp({super.key});
 
   @override
   State<SignUp> createState() => _SignUpState();
@@ -40,6 +40,7 @@ class _SignUpState extends State<SignUp> {
   void cropImage(XFile file) async {
     CroppedFile? croppedImage = await ImageCropper().cropImage(
         cropStyle: CropStyle.circle,
+        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
         compressQuality: 30,
         sourcePath: file.path);
     if (croppedImage != null) {
@@ -65,6 +66,7 @@ class _SignUpState extends State<SignUp> {
           MaterialPageRoute(builder: (context) => const SuccessPage()));
       if (userCredential != null) {
         String uid = userCredential.user!.uid;
+
         UserModel newUser = UserModel(
           uid: uid,
           name: name,
@@ -73,19 +75,15 @@ class _SignUpState extends State<SignUp> {
         );
         uploadTask = FirebaseStorage.instance
             .ref("Profile Pictures")
-            //.child(widget.userModel!.uid.toString())
             .child(FirebaseAuth.instance.currentUser!.uid)
             .putFile(File(imageFile!.path));
 
-        TaskSnapshot snapshot = await uploadTask.whenComplete(() {});
+        TaskSnapshot snapshot = await uploadTask;
 
         String imageUrl = await snapshot.ref.getDownloadURL();
         downloadImageUrl = imageUrl;
-        await FirebaseFirestore.instance
-            .collection("users")
-            .doc(uid)
-            //.set(newUser.toMap());
-            .set({
+
+        await FirebaseFirestore.instance.collection("users").doc(uid).set({
           "uid": uid,
           "name": name,
           "email": email,

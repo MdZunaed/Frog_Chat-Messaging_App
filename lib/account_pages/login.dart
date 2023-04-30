@@ -95,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 //gap,
                 loading
-                    ? CircularProgressIndicator()
+                    ? const CircularProgressIndicator()
                     : InkWell(
                         child: Button(text: "Log in"),
                         onTap: () {

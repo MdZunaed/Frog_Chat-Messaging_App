@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:frog_chat/Screen/home_page/home_page.dart';
 import 'package:frog_chat/account_pages/login.dart';
-import 'package:frog_chat/account_pages/sign_up.dart';
 import 'package:frog_chat/style.dart';
 
 class SplashScreen extends StatefulWidget {

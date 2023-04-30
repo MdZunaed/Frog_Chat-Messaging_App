@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:frog_chat/style.dart';
 
 import 'audio_call.dart';
-import 'chat_inbox.dart';
 
 class VideoCall extends StatefulWidget {
   const VideoCall({super.key});
