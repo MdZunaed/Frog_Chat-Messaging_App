@@ -25,7 +25,7 @@ class _AccountInfoState extends State<AccountInfo> {
           Center(
             child: Stack(children: [
               CircleAvatar(
-                  radius: 60.r,
+                  radius: 55.r,
                   backgroundImage: const AssetImage("images/sayed.png")),
               Positioned(
                   right: 0,

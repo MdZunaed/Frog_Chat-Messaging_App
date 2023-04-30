@@ -31,8 +31,11 @@ class _PasswordFieldState extends State<PasswordField> {
           cursorColor: kPrimaryColor,
           style: const TextStyle(color: kWhiteColor),
           decoration: InputDecoration(
-              prefixIcon: Icon(CupertinoIcons.asterisk_circle,
-                  size: 25.h, color: kSecondayColor),
+              prefixIcon: Icon(CupertinoIcons.asterisk_circle, size: 25.h),
+              prefixIconColor: MaterialStateColor.resolveWith((states) =>
+                  states.contains(MaterialState.focused)
+                      ? kPrimaryColor
+                      : kSecondayColor),
               border: InputBorder.none,
               hintText: widget.hintText,
               hintStyle: const TextStyle(color: kSecondayColor),

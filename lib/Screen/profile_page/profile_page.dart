@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frog_chat/Screen/profile_page/option_page/account_info.dart';
@@ -8,6 +7,8 @@ import 'package:frog_chat/Screen/profile_page/option_page/notification.dart';
 import 'package:frog_chat/Screen/profile_page/profile_option.dart';
 import 'package:frog_chat/account_pages/login.dart';
 import 'package:frog_chat/style.dart';
+
+import '../../element.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -19,8 +20,9 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   void logout() async {
     await FirebaseAuth.instance.signOut();
+    Navigator.popUntil(context, (route) => route.isFirst);
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => LoginPage()));
+        context, MaterialPageRoute(builder: (context) => const LoginPage()));
   }
 
   @override
@@ -66,6 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             InkWell(
                 onTap: () {
+                  toast().toastmessage("This is just a demo");
                   Navigator.push(
                       context,
                       MaterialPageRoute(

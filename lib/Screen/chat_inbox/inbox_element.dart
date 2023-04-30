@@ -4,9 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:frog_chat/Screen/chat_inbox/VideoCall.dart';
 import 'package:frog_chat/Screen/chat_inbox/audio_call.dart';
-import 'package:frog_chat/Screen/chat_inbox/person_info.dart';
-import 'package:frog_chat/Screen/profile_page/option_page/account_info.dart';
 import 'package:frog_chat/style.dart';
+
+import '../../element.dart';
 
 class InboxAppbar extends StatelessWidget {
   const InboxAppbar({super.key});
@@ -177,10 +177,9 @@ class SheetItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       //onTap: onTap,
-      onTap: () => Fluttertoast.showToast(
-          msg: "Not available right now",
-          textColor: kDarkColor,
-          backgroundColor: kPrimaryColor),
+      onTap: () {
+        toast().toastmessage("Not available right now");
+      },
       child: Row(
         children: [
           Container(

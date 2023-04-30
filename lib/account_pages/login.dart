@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,8 +7,10 @@ import 'package:frog_chat/account_pages/input_fields/button.dart';
 import 'package:frog_chat/account_pages/input_fields/email.dart';
 import 'package:frog_chat/account_pages/input_fields/password.dart';
 import 'package:frog_chat/account_pages/sign_up.dart';
+import 'package:frog_chat/models/UserModel.dart';
 import 'package:frog_chat/style.dart';
 import '../Screen/home_page/home_page.dart';
+import '../element.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -23,25 +26,32 @@ class _LoginPageState extends State<LoginPage> {
   void logIn() async {
     String email = emailController.text.trim();
     String pass = passController.text.trim();
-
+    UserCredential? userCredential;
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
+      userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: pass);
-      if (userCredential != null) {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => HomePage()));
-        Fluttertoast.showToast(
-            msg: "Login successfully",
-            textColor: kDarkColor,
-            backgroundColor: kPrimaryColor);
-      }
+      //if (userCredential != null) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const HomePage()));
+      toast().toastmessage("Login successfully");
+      //}
     } on FirebaseAuthException catch (error) {
-      Fluttertoast.showToast(
-          msg: error.message!,
-          textColor: kDarkColor,
-          backgroundColor: kPrimaryColor);
+      toast().toastmessage(error.message!);
+      setState(() {
+        loading = false;
+      });
+    }
+    if (userCredential != null) {
+      String uid = userCredential.user!.uid;
+
+      DocumentSnapshot userData =
+          await FirebaseFirestore.instance.collection("users").doc(uid).get();
+      UserModel userModel =
+          UserModel.fromMap(userData.data() as Map<String, dynamic>);
     }
   }
+
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -77,23 +87,26 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     TextButton(
                         child: Text("Forgot Password?", style: kTitleStyle),
-                        onPressed: () => Fluttertoast.showToast(
-                            msg: "Not available right now",
-                            textColor: kDarkColor,
-                            backgroundColor: kPrimaryColor,
-                            gravity: ToastGravity.BOTTOM)),
+                        onPressed: () {
+                          toast().toastmessage("Not available right now");
+                        }),
                   ],
                 ),
                 SizedBox(height: 8.h),
 
                 //gap,
-                InkWell(
-                  child: Button(text: "Log in"),
-                  onTap: () {
-                    logIn();
-                    //Navigator.push(context,MaterialPageRoute(builder: (context) => const HomePage()));
-                  },
-                ),
+                loading
+                    ? CircularProgressIndicator()
+                    : InkWell(
+                        child: Button(text: "Log in"),
+                        onTap: () {
+                          logIn();
+                          setState(() {
+                            loading = true;
+                          });
+                          //Navigator.push(context,MaterialPageRoute(builder: (context) => const HomePage()));
+                        },
+                      ),
                 gap,
                 Text("Don't you have an Account?", style: kTitleStyle),
                 gap,

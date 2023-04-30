@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:frog_chat/account_pages/input_fields/button.dart';
 import 'package:frog_chat/account_pages/input_fields/email.dart';
 import 'package:frog_chat/account_pages/otp_page.dart';
 import 'package:frog_chat/account_pages/success.dart';
+import 'package:frog_chat/element.dart';
+import 'package:frog_chat/models/UserModel.dart';
 import 'package:frog_chat/style.dart';
 import 'input_fields/password.dart';
 
@@ -26,39 +29,36 @@ class _SignUpState extends State<SignUp> {
     String email = emailController.text.trim();
     String pass = passController.text.trim();
     String cpass = cpassController.text.trim();
+    UserCredential? userCredential;
 
     try {
-      if (email == "" || pass == "" || cpass == "") {
-        Fluttertoast.showToast(
-            msg: "Fill all the info",
-            textColor: kDarkColor,
-            backgroundColor: kPrimaryColor);
-      } else if (pass != cpass) {
-        Fluttertoast.showToast(
-            msg: "Password do not match",
-            textColor: kDarkColor,
-            backgroundColor: kPrimaryColor);
-      } else {
-        UserCredential userCredential = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(email: email, password: pass);
-        // Fluttertoast.showToast(
-        //     msg: "User created",
-        //     textColor: kDarkColor,
-        //     backgroundColor: kPrimaryColor);
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => SuccessPage()));
-        await FirebaseFirestore.instance
-            .collection("user")
-            .doc(userCredential.user!.uid)
-            .set({"name": name, "email": email, "password": pass});
-      }
+      userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: pass);
+      //toast().toastmessage("User created");
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const SuccessPage()));
     } on FirebaseAuthException catch (error) {
-      Fluttertoast.showToast(
-          msg: error.message!,
-          textColor: kDarkColor,
-          backgroundColor: kPrimaryColor);
+      toast().toastmessage(error.message!);
+      setState(() {
+        loading = false;
+      });
+    }
+    if (userCredential != null) {
+      String uid = userCredential.user!.uid;
+      UserModel newUser = UserModel(
+        uid: uid,
+        name: name,
+        email: email,
+        pic: "",
+      );
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(uid)
+          .set(newUser.toMap());
     }
   }
+
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +67,7 @@ class _SignUpState extends State<SignUp> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 //crossAxisAlignment: CrossAxisAlignment.center,
@@ -76,6 +76,7 @@ class _SignUpState extends State<SignUp> {
                     Text("Sign up - Frog Chat", style: kHeadingStyle)
                   ]),
                   gap,
+                  const GetPic(),
                   gap,
                   Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                     Text("Step-1",
@@ -108,17 +109,60 @@ class _SignUpState extends State<SignUp> {
                   gap,
                   gap,
                   gap,
-                  InkWell(
-                    child: Button(text: "Sign Up"),
-                    onTap: () {
-                      createAccount();
-                      //Navigator.push(context,MaterialPageRoute(builder: (context) => const OtpPage()));
-                    },
-                  ),
+                  loading
+                      ? CircularProgressIndicator()
+                      : InkWell(
+                          child: Button(text: "Sign Up"),
+                          onTap: () {
+                            setState(() {
+                              loading = true;
+                            });
+                            createAccount();
+                            //Navigator.push(context,MaterialPageRoute(builder: (context) => const OtpPage()));
+                          },
+                        ),
                 ]),
           ),
         ),
       ),
     );
+  }
+}
+
+class GetPic extends StatelessWidget {
+  const GetPic({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(children: [
+      CircleAvatar(
+        radius: 55.r,
+        backgroundColor: kDarkColor,
+        child: const Icon(Icons.image, size: 50, color: kSecondayColor),
+      ),
+      Positioned(
+          right: 0,
+          bottom: 0,
+          child: Container(
+              height: 45.h,
+              width: 45.w,
+              decoration: const BoxDecoration(
+                  color: kPrimaryColor, shape: BoxShape.circle),
+              child: PopupMenuButton(
+                  icon: const Icon(Icons.edit_document, color: kDarkColor),
+                  color: kPrimaryColor,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  itemBuilder: (context) => [
+                        PopupMenuItem(
+                            child: Text("Take Picture",
+                                style:
+                                    kTitleStyle.copyWith(color: kDarkColor))),
+                        PopupMenuItem(
+                            child: Text("From Gallery",
+                                style:
+                                    kTitleStyle.copyWith(color: kDarkColor))),
+                      ]))),
+    ]);
   }
 }

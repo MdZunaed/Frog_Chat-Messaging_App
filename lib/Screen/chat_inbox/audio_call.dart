@@ -65,10 +65,7 @@ class _AudioCallState extends State<AudioCall> {
                 icon: Icons.call,
                 color: "end",
                 pressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ChatInbox()));
+                  Navigator.pop(context);
                 },
               ),
             ],

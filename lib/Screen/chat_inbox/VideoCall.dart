@@ -72,10 +72,7 @@ class _VideoCallState extends State<VideoCall> {
                 icon: Icons.call,
                 color: "end",
                 pressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ChatInbox()));
+                  Navigator.pop(context);
                 },
               ),
             ],

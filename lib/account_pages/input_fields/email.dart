@@ -22,8 +22,11 @@ class InputField extends StatelessWidget {
           cursorColor: kPrimaryColor,
           style: const TextStyle(color: kWhiteColor),
           decoration: InputDecoration(
-            prefixIcon: Icon(CupertinoIcons.person_crop_circle,
-                size: 25.h, color: kSecondayColor),
+            prefixIcon: Icon(CupertinoIcons.person_crop_circle, size: 25.h),
+            prefixIconColor: MaterialStateColor.resolveWith((states) =>
+                states.contains(MaterialState.focused)
+                    ? kPrimaryColor
+                    : kSecondayColor),
             border: InputBorder.none,
             hintText: text,
             hintStyle: const TextStyle(color: kSecondayColor),
