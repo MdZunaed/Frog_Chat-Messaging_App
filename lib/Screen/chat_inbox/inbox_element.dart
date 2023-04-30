@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:frog_chat/Screen/chat_inbox/VideoCall.dart';
 import 'package:frog_chat/Screen/chat_inbox/audio_call.dart';
 import 'package:frog_chat/style.dart';
 
-import '../../element.dart';
+import '../../elements/show_toast.dart';
 
 class InboxAppbar extends StatelessWidget {
   const InboxAppbar({super.key});

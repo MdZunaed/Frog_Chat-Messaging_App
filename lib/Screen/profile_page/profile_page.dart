@@ -7,8 +7,7 @@ import 'package:frog_chat/Screen/profile_page/option_page/notification.dart';
 import 'package:frog_chat/Screen/profile_page/profile_option.dart';
 import 'package:frog_chat/account_pages/login.dart';
 import 'package:frog_chat/style.dart';
-
-import '../../element.dart';
+import 'package:frog_chat/elements/show_toast.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 class UserModel {
   UserModel({this.uid, this.name, this.email, this.pic});
   String? uid;

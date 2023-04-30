@@ -1,19 +1,21 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:frog_chat/account_pages/input_fields/button.dart';
 import 'package:frog_chat/account_pages/input_fields/email.dart';
-import 'package:frog_chat/account_pages/otp_page.dart';
 import 'package:frog_chat/account_pages/success.dart';
-import 'package:frog_chat/element.dart';
+import 'package:frog_chat/elements/show_toast.dart';
 import 'package:frog_chat/models/UserModel.dart';
 import 'package:frog_chat/style.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'input_fields/password.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+  SignUp({super.key});
 
   @override
   State<SignUp> createState() => _SignUpState();
@@ -24,37 +26,78 @@ class _SignUpState extends State<SignUp> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
   TextEditingController cpassController = TextEditingController();
+  File? imageFile;
+  String downloadImageUrl = "";
+
+  void selectImage(ImageSource source) async {
+    XFile? pickedImage = await ImagePicker().pickImage(source: source);
+
+    if (pickedImage != null) {
+      cropImage(pickedImage);
+    }
+  }
+
+  void cropImage(XFile file) async {
+    CroppedFile? croppedImage = await ImageCropper().cropImage(
+        cropStyle: CropStyle.circle,
+        compressQuality: 30,
+        sourcePath: file.path);
+    if (croppedImage != null) {
+      setState(() {
+        imageFile = File(croppedImage.path);
+      });
+    }
+  }
+
   void createAccount() async {
     String name = nameController.text.trim();
     String email = emailController.text.trim();
     String pass = passController.text.trim();
     String cpass = cpassController.text.trim();
     UserCredential? userCredential;
+    UploadTask uploadTask;
 
     try {
       userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: pass);
-      //toast().toastmessage("User created");
+      toast().toastmessage("User created");
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) => const SuccessPage()));
+      if (userCredential != null) {
+        String uid = userCredential.user!.uid;
+        UserModel newUser = UserModel(
+          uid: uid,
+          name: name,
+          email: email,
+          pic: downloadImageUrl,
+        );
+        uploadTask = FirebaseStorage.instance
+            .ref("Profile Pictures")
+            //.child(widget.userModel!.uid.toString())
+            .child(FirebaseAuth.instance.currentUser!.uid)
+            .putFile(File(imageFile!.path));
+
+        TaskSnapshot snapshot = await uploadTask.whenComplete(() {});
+
+        String imageUrl = await snapshot.ref.getDownloadURL();
+        downloadImageUrl = imageUrl;
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(uid)
+            //.set(newUser.toMap());
+            .set({
+          "uid": uid,
+          "name": name,
+          "email": email,
+          "password": pass,
+          "url": downloadImageUrl
+        });
+      }
     } on FirebaseAuthException catch (error) {
       toast().toastmessage(error.message!);
       setState(() {
         loading = false;
       });
-    }
-    if (userCredential != null) {
-      String uid = userCredential.user!.uid;
-      UserModel newUser = UserModel(
-        uid: uid,
-        name: name,
-        email: email,
-        pic: "",
-      );
-      await FirebaseFirestore.instance
-          .collection("users")
-          .doc(uid)
-          .set(newUser.toMap());
     }
   }
 
@@ -76,7 +119,48 @@ class _SignUpState extends State<SignUp> {
                     Text("Sign up - Frog Chat", style: kHeadingStyle)
                   ]),
                   gap,
-                  const GetPic(),
+                  Stack(children: [
+                    CircleAvatar(
+                      radius: 55.r,
+                      backgroundColor: kDarkColor,
+                      backgroundImage:
+                          (imageFile != null) ? FileImage(imageFile!) : null,
+                      child: (imageFile == null)
+                          ? const Icon(Icons.image,
+                              size: 50, color: kSecondayColor)
+                          : null,
+                    ),
+                    Positioned(
+                        right: 0,
+                        bottom: 0,
+                        child: Container(
+                            height: 45.h,
+                            width: 45.w,
+                            decoration: const BoxDecoration(
+                                color: kPrimaryColor, shape: BoxShape.circle),
+                            child: PopupMenuButton(
+                                icon: const Icon(Icons.edit_document,
+                                    color: kDarkColor),
+                                color: kPrimaryColor,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                itemBuilder: (context) => [
+                                      PopupMenuItem(
+                                          onTap: () {
+                                            selectImage(ImageSource.camera);
+                                          },
+                                          child: Text("Take Picture",
+                                              style: kTitleStyle.copyWith(
+                                                  color: kDarkColor))),
+                                      PopupMenuItem(
+                                          onTap: () {
+                                            selectImage(ImageSource.gallery);
+                                          },
+                                          child: Text("From Gallery",
+                                              style: kTitleStyle.copyWith(
+                                                  color: kDarkColor))),
+                                    ]))),
+                  ]),
                   gap,
                   Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                     Text("Step-1",
@@ -110,7 +194,7 @@ class _SignUpState extends State<SignUp> {
                   gap,
                   gap,
                   loading
-                      ? CircularProgressIndicator()
+                      ? const CircularProgressIndicator()
                       : InkWell(
                           child: Button(text: "Sign Up"),
                           onTap: () {
@@ -126,43 +210,5 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
     );
-  }
-}
-
-class GetPic extends StatelessWidget {
-  const GetPic({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(children: [
-      CircleAvatar(
-        radius: 55.r,
-        backgroundColor: kDarkColor,
-        child: const Icon(Icons.image, size: 50, color: kSecondayColor),
-      ),
-      Positioned(
-          right: 0,
-          bottom: 0,
-          child: Container(
-              height: 45.h,
-              width: 45.w,
-              decoration: const BoxDecoration(
-                  color: kPrimaryColor, shape: BoxShape.circle),
-              child: PopupMenuButton(
-                  icon: const Icon(Icons.edit_document, color: kDarkColor),
-                  color: kPrimaryColor,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  itemBuilder: (context) => [
-                        PopupMenuItem(
-                            child: Text("Take Picture",
-                                style:
-                                    kTitleStyle.copyWith(color: kDarkColor))),
-                        PopupMenuItem(
-                            child: Text("From Gallery",
-                                style:
-                                    kTitleStyle.copyWith(color: kDarkColor))),
-                      ]))),
-    ]);
   }
 }

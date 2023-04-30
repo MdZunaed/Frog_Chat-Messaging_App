@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:frog_chat/account_pages/input_fields/button.dart';
 import 'package:frog_chat/account_pages/input_fields/email.dart';
 import 'package:frog_chat/account_pages/input_fields/password.dart';
@@ -10,7 +9,7 @@ import 'package:frog_chat/account_pages/sign_up.dart';
 import 'package:frog_chat/models/UserModel.dart';
 import 'package:frog_chat/style.dart';
 import '../Screen/home_page/home_page.dart';
-import '../element.dart';
+import '../elements/show_toast.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -112,10 +111,8 @@ class _LoginPageState extends State<LoginPage> {
                 gap,
                 InkWell(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SignUp()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => SignUp()));
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
