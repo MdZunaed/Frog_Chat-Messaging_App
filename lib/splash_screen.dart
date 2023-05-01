@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:frog_chat/Screen/home_page/home_page.dart';
 import 'package:frog_chat/account_pages/login.dart';
+import 'package:frog_chat/models/UserModel.dart';
+import 'package:frog_chat/models/firebase_helper.dart';
 import 'package:frog_chat/style.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -13,6 +15,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  User? currentUser = FirebaseAuth.instance.currentUser;
   @override
   void initState() {
     super.initState();
@@ -20,10 +23,9 @@ class _SplashScreenState extends State<SplashScreen> {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) =>
-                      (FirebaseAuth.instance.currentUser != null)
-                          ? const HomePage()
-                          : const LoginPage()))
+                  builder: (context) => (currentUser != null)
+                      ? const HomePage()
+                      : const LoginPage()))
         });
   }
 

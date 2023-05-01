@@ -88,7 +88,7 @@ class _SignUpState extends State<SignUp> {
           "name": name,
           "email": email,
           "password": pass,
-          "url": downloadImageUrl
+          "pic": downloadImageUrl
         });
       }
     } on FirebaseAuthException catch (error) {
