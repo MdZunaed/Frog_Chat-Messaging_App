@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frog_chat/Screen/chat_inbox/chat_inbox.dart';
-import 'package:frog_chat/Screen/home_page/homepage_element.dart';
 import 'package:frog_chat/elements/show_toast.dart';
 import 'package:frog_chat/models/UserModel.dart';
 import 'package:frog_chat/style.dart';
@@ -102,7 +101,7 @@ class _SearchPageState extends State<SearchPage> {
                   return const Text("No resuls found!");
                 }
               } else {
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               }
             },
           )
