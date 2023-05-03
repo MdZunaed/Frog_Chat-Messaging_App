@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frog_chat/splash_screen.dart';
 import 'package:frog_chat/style.dart';
+import 'package:uuid/uuid.dart';
+
+var uuid = Uuid();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

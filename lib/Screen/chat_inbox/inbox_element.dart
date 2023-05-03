@@ -8,7 +8,10 @@ import 'package:frog_chat/style.dart';
 import '../../elements/show_toast.dart';
 
 class InboxAppbar extends StatelessWidget {
-  const InboxAppbar({super.key});
+  String name;
+  final imageUrl;
+
+  InboxAppbar({super.key, required this.name, required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,7 @@ class InboxAppbar extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: 22.r,
-          backgroundImage: const AssetImage("images/sayed.png"),
+          backgroundImage: NetworkImage(imageUrl),
         ),
         gaph,
         Expanded(
@@ -26,10 +29,10 @@ class InboxAppbar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Abu Sayed", style: TextStyle(fontSize: 17.sp)),
-                SizedBox(height: 5.h),
-                Text("Active now",
-                    style: TextStyle(fontSize: 11.sp, color: kSecondayColor)),
+                Text(name, style: TextStyle(fontSize: 17.sp)),
+                // SizedBox(height: 5.h),
+                // Text("Active now",
+                //     style: TextStyle(fontSize: 11.sp, color: kSecondayColor)),
               ]),
         ),
         Row(
@@ -80,7 +83,9 @@ class InboxAppbar extends StatelessWidget {
 }
 
 class InboxNavbar extends StatefulWidget {
-  const InboxNavbar({super.key});
+  TextEditingController controller;
+  VoidCallback onTap;
+  InboxNavbar({super.key, required this.controller, required this.onTap});
 
   @override
   State<InboxNavbar> createState() => _InboxNavbarState();
@@ -93,8 +98,9 @@ class _InboxNavbarState extends State<InboxNavbar> {
       height: 70.h,
       padding: EdgeInsets.all(10.r),
       child: Row(children: [
-        Icon(Icons.location_on_rounded, color: kPrimaryColor, size: 30.r),
+        //Icon(Icons.location_on_rounded, color: kPrimaryColor, size: 30.r),
         IconButton(
+            splashRadius: 25,
             icon: Icon(Icons.attach_file_rounded,
                 color: kPrimaryColor, size: 30.r),
             onPressed: () {
@@ -140,12 +146,12 @@ class _InboxNavbarState extends State<InboxNavbar> {
             child: TextField(
               // expands: true,
               // minLines: null,
-              // maxLines: null,
+              maxLines: null,
+              controller: widget.controller,
               style: kTitleStyle,
               decoration: InputDecoration(
                 isDense: true,
-                suffixIcon: Icon(Icons.face_5_rounded,
-                    color: kPrimaryColor, size: 23.h),
+                //suffixIcon: Icon(Icons.face_5_rounded, color: kPrimaryColor, size: 23.h),
                 hintText: "Type here...",
                 hintStyle: const TextStyle(color: kSecondayColor, fontSize: 15),
                 fillColor: kDarkColor,
@@ -157,9 +163,11 @@ class _InboxNavbarState extends State<InboxNavbar> {
             ),
           ),
         ),
+
         IconButton(
-            icon: Icon(Icons.send, color: kPrimaryColor, size: 30.r),
-            onPressed: () {}),
+            splashRadius: 28,
+            icon: Icon(Icons.send, color: kPrimaryColor, size: 28.r),
+            onPressed: widget.onTap),
       ]),
     );
   }

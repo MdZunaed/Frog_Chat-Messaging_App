@@ -1,17 +1,20 @@
 class InboxModel {
-  InboxModel({this.inboxId, this.persons});
+  InboxModel({this.inboxId, this.persons, this.lastMessage});
   String? inboxId;
-  List<String>? persons;
+  Map<String, dynamic>? persons;
+  String? lastMessage;
 
   InboxModel.fromMap(Map<String, dynamic> map) {
-    inboxId = map["inboxId"];
+    inboxId = map["inboxid"];
     persons = map["persons"];
+    lastMessage = map["lastmessage"];
   }
 
   Map<String, dynamic> toMap() {
     return {
-      "inboxId": inboxId,
+      "inboxid": inboxId,
       "persons": persons,
+      "lastmessage": lastMessage,
     };
   }
 }

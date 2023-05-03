@@ -17,7 +17,7 @@ final kTitleStyle = TextStyle(
     letterSpacing: 0.5);
 
 final kTextStyle =
-    TextStyle(fontSize: 13.sp, color: kWhiteColor, fontWeight: FontWeight.w400);
+    TextStyle(fontSize: 15.sp, color: kWhiteColor, fontWeight: FontWeight.w400);
 
 final gap = SizedBox(height: 20.h);
 final gaph = SizedBox(width: 10.w);

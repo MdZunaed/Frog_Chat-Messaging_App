@@ -1,13 +1,20 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frog_chat/Screen/chat_inbox/chat_inbox.dart';
 import 'package:frog_chat/elements/show_toast.dart';
+import 'package:frog_chat/main.dart';
+import 'package:frog_chat/models/InboxModel.dart';
 import 'package:frog_chat/models/UserModel.dart';
+import 'package:frog_chat/models/firebase_helper.dart';
 import 'package:frog_chat/style.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({super.key});
+  User? currentUser = FirebaseAuth.instance.currentUser;
+  SearchPage({super.key, this.currentUser});
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -15,6 +22,38 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   TextEditingController searchController = TextEditingController();
+  User? currentUser = FirebaseAuth.instance.currentUser;
+
+  Future<InboxModel?> getInboxModel(UserModel targetUser) async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    InboxModel? inbox;
+    UserModel? userModel =
+        await FirebaseHelper.userModelByUid(currentUser!.uid);
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection("inboxes")
+        .where("persons.${userModel!.uid}", isEqualTo: true)
+        .where("persons.${targetUser.uid}", isEqualTo: true)
+        .get();
+
+    if (snapshot.docs.length > 0) {
+      var inboxData = snapshot.docs[0].data();
+      InboxModel currentInbox =
+          InboxModel.fromMap(inboxData as Map<String, dynamic>);
+      inbox = currentInbox;
+    } else {
+      InboxModel newInbox =
+          InboxModel(inboxId: uuid.v1(), lastMessage: "", persons: {
+        userModel.uid.toString(): true,
+        targetUser.uid.toString(): true,
+      });
+      await FirebaseFirestore.instance
+          .collection("inboxes")
+          .doc(newInbox.inboxId)
+          .set(newInbox.toMap());
+      inbox = newInbox;
+    }
+    return inbox;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,11 +113,25 @@ class _SearchPageState extends State<SearchPage> {
                     UserModel searchedUser = UserModel.fromMap(userMap);
 
                     return ListTile(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const ChatInbox()));
+                      onTap: () async {
+                        InboxModel? inboxModel =
+                            await getInboxModel(searchedUser);
+                        if (InboxModel != null) {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ChatInbox(
+                                      targetuser: searchedUser,
+                                      inbox: inboxModel!,
+                                      firebaseUser: currentUser!)));
+                        }
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => ChatInbox(
+                        //           targetuser: searchedUser,
+                        //           inbox: ,
+                        //         )));
                       },
                       leading: CircleAvatar(
                           backgroundColor: kSecondayColor,

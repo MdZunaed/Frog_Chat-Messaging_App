@@ -12,8 +12,8 @@ class BarIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const SearchPage()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => SearchPage()));
       },
       child: Container(
         margin: const EdgeInsets.all(7).w,

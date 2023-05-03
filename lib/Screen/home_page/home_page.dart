@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frog_chat/style.dart';
@@ -33,7 +32,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         actions: [BarImage(imageName: "sayed.png")],
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
         child: Column(
           children: [
             // Container(
@@ -76,7 +75,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       width: 140.w,
                       child: const Tab(text: "Group's")),
                 ]),
-            SizedBox(height: 15.h),
+            SizedBox(height: 10.h),
             Expanded(
               child: TabBarView(
                 controller: tabController,

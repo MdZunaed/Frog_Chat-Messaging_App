@@ -59,8 +59,8 @@ class ChatList extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const SearchPage()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => SearchPage()));
         },
         backgroundColor: kPrimaryColor,
         child: const Icon(Icons.person_add, color: kDarkColor),
@@ -71,8 +71,8 @@ class ChatList extends StatelessWidget {
         itemBuilder: (context, index) {
           return InkWell(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: ((context) => const ChatInbox())));
+              // Navigator.push(context,
+              //     MaterialPageRoute(builder: ((context) => const ChatInbox())));
             },
             child: Container(
               height: 60.h,

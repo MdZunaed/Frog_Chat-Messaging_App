@@ -111,8 +111,10 @@ class _LoginPageState extends State<LoginPage> {
                 gap,
                 InkWell(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SignUp()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SignUp()));
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
