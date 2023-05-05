@@ -6,11 +6,13 @@ import 'package:frog_chat/Screen/profile_page/option_page/call_history.dart';
 import 'package:frog_chat/Screen/profile_page/option_page/notification.dart';
 import 'package:frog_chat/Screen/profile_page/profile_option.dart';
 import 'package:frog_chat/account_pages/login.dart';
+import 'package:frog_chat/models/UserModel.dart';
 import 'package:frog_chat/style.dart';
 import 'package:frog_chat/elements/show_toast.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  final UserModel userModel;
+  const ProfilePage({super.key, required this.userModel});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -34,12 +36,12 @@ class _ProfilePageState extends State<ProfilePage> {
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Center(
           child: Column(children: [
-            const CircleAvatar(
+            CircleAvatar(
               radius: 55,
-              backgroundImage: AssetImage("images/sayed.png"),
+              backgroundImage: NetworkImage(widget.userModel.pic.toString()),
             ),
             gap,
-            Text("Abu Sayed", style: kHeadingStyle),
+            Text(widget.userModel.name.toString(), style: kHeadingStyle),
             gap,
             Divider(color: kPrimaryColor, thickness: 2.h),
             gap,
@@ -48,7 +50,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: ((context) => const AccountInfo())));
+                        builder: ((context) =>
+                            AccountInfo(userModel: widget.userModel))));
               },
               child: ProfileOption(
                   icon: Icons.person_rounded,

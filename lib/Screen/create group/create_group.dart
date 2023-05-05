@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:frog_chat/Screen/home_page/chat_list.dart';
 import 'package:frog_chat/style.dart';
 
 import 'group_element.dart';
@@ -38,7 +37,7 @@ class _CreateGroupState extends State<CreateGroup> {
               Icon(Icons.arrow_downward, color: kSecondayColor, size: 20.h)
             ]),
             gap,
-            Expanded(child: ChatList())
+            //Expanded(child: ChatList())
           ],
         ),
       )),

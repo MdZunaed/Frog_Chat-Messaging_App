@@ -11,24 +11,8 @@ class GroupList extends StatelessWidget {
     "Skill Inventor",
     "Project Little jinious",
     "We are মাল",
-    "Frog Chat Community",
-    "Skill Inventor",
-    "Project Little jinious",
-    "We are মাল",
-    "Frog Chat Community",
-    "Skill Inventor",
-    "Project Little jinious",
-    "We are মাল",
   ];
   List msg = [
-    "Sobai mara kha",
-    "Tk lagbo mia",
-    "kobe dhorba project",
-    "Chol tour e jai",
-    "Sobai mara kha",
-    "Tk lagbo mia",
-    "kobe dhorba project",
-    "Chol tour e jai",
     "Sobai mara kha",
     "Tk lagbo mia",
     "kobe dhorba project",
@@ -36,14 +20,6 @@ class GroupList extends StatelessWidget {
   ];
 
   List image = [
-    "images/frog.png",
-    "images/sk.png",
-    "images/little.png",
-    "images/mal.jpg",
-    "images/frog.png",
-    "images/sk.png",
-    "images/little.png",
-    "images/mal.jpg",
     "images/frog.png",
     "images/sk.png",
     "images/little.png",
@@ -60,9 +36,8 @@ class GroupList extends StatelessWidget {
         itemBuilder: (context, index) {
           return Container(
             height: 60.h,
-            decoration: BoxDecoration(
-                //color: kWhiteColor,
-                borderRadius: BorderRadius.circular(10.r)),
+            decoration:
+                BoxDecoration(borderRadius: BorderRadius.circular(10.r)),
             padding: EdgeInsets.symmetric(horizontal: 5.w),
             margin: EdgeInsets.symmetric(vertical: 5.h),
             child: Row(
@@ -73,8 +48,7 @@ class GroupList extends StatelessWidget {
                   width: 55.w,
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: AssetImage(image[index]), fit: BoxFit.cover)),
+                      image: DecorationImage(image: AssetImage(image[index]))),
                 ),
                 SizedBox(width: 10.w),
                 Column(
@@ -84,7 +58,7 @@ class GroupList extends StatelessWidget {
                     Text(group[index],
                         style: kTitleStyle.copyWith(fontSize: 16)),
                     SizedBox(height: 4.h),
-                    Text("Zunu: " + msg[index],
+                    Text("Zunu: ${msg[index]}",
                         style: kTitleStyle.copyWith(color: kSecondayColor)),
                   ],
                 ),

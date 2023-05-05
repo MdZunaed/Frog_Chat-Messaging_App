@@ -95,8 +95,8 @@ class _InboxNavbarState extends State<InboxNavbar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70.h,
-      padding: EdgeInsets.all(10.r),
+      //height: 70.h,
+      padding: EdgeInsets.all(8.h),
       child: Row(children: [
         //Icon(Icons.location_on_rounded, color: kPrimaryColor, size: 30.r),
         IconButton(
@@ -141,13 +141,14 @@ class _InboxNavbarState extends State<InboxNavbar> {
             }),
         Expanded(
           child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 10),
-            height: 50.h,
+            margin: const EdgeInsets.symmetric(horizontal: 5).w,
+            //height: 50.h,
             child: TextField(
-              // expands: true,
-              // minLines: null,
-              maxLines: null,
+              keyboardType: TextInputType.multiline,
+              minLines: 1,
+              maxLines: 4,
               controller: widget.controller,
+              textAlignVertical: TextAlignVertical.center,
               style: kTitleStyle,
               decoration: InputDecoration(
                 isDense: true,

@@ -21,6 +21,7 @@ class InputField extends StatelessWidget {
           controller: controller,
           cursorColor: kPrimaryColor,
           style: const TextStyle(color: kWhiteColor),
+          textAlignVertical: TextAlignVertical.center,
           decoration: InputDecoration(
             prefixIcon: Icon(CupertinoIcons.person_crop_circle, size: 25.h),
             prefixIconColor: MaterialStateColor.resolveWith((states) =>

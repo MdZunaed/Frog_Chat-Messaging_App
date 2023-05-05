@@ -1,20 +1,19 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frog_chat/Screen/chat_inbox/chat_inbox.dart';
-import 'package:frog_chat/elements/show_toast.dart';
 import 'package:frog_chat/main.dart';
 import 'package:frog_chat/models/InboxModel.dart';
 import 'package:frog_chat/models/UserModel.dart';
-import 'package:frog_chat/models/firebase_helper.dart';
 import 'package:frog_chat/style.dart';
 
 class SearchPage extends StatefulWidget {
-  User? currentUser = FirebaseAuth.instance.currentUser;
-  SearchPage({super.key, this.currentUser});
+  final UserModel userModel;
+  final User firebaseUser;
+
+  const SearchPage(
+      {super.key, required this.userModel, required this.firebaseUser});
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -22,16 +21,12 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   TextEditingController searchController = TextEditingController();
-  User? currentUser = FirebaseAuth.instance.currentUser;
 
   Future<InboxModel?> getInboxModel(UserModel targetUser) async {
-    User? currentUser = FirebaseAuth.instance.currentUser;
     InboxModel? inbox;
-    UserModel? userModel =
-        await FirebaseHelper.userModelByUid(currentUser!.uid);
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection("inboxes")
-        .where("persons.${userModel!.uid}", isEqualTo: true)
+        .where("persons.${widget.userModel.uid}", isEqualTo: true)
         .where("persons.${targetUser.uid}", isEqualTo: true)
         .get();
 
@@ -41,11 +36,15 @@ class _SearchPageState extends State<SearchPage> {
           InboxModel.fromMap(inboxData as Map<String, dynamic>);
       inbox = currentInbox;
     } else {
-      InboxModel newInbox =
-          InboxModel(inboxId: uuid.v1(), lastMessage: "", persons: {
-        userModel.uid.toString(): true,
-        targetUser.uid.toString(): true,
-      });
+      InboxModel newInbox = InboxModel(
+          inboxId: uuid.v1(),
+          lastMessage: "",
+          persons: {
+            widget.userModel.uid.toString(): true,
+            targetUser.uid.toString(): true
+          },
+          users: [widget.userModel.uid.toString(), targetUser.uid.toString()],
+          chatTime: DateTime.now());
       await FirebaseFirestore.instance
           .collection("inboxes")
           .doc(newInbox.inboxId)
@@ -80,21 +79,21 @@ class _SearchPageState extends State<SearchPage> {
       ),
       body: SingleChildScrollView(
           child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20).r,
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10).r,
         child: Column(children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Recent searches",
-                  style: kTitleStyle.copyWith(color: kSecondayColor)),
-              TextButton(
-                  onPressed: () {
-                    toast().toastmessage("Not available right now");
-                  },
-                  child: Text("Edit",
-                      style: kTitleStyle.copyWith(color: kPrimaryColor)))
-            ],
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     Text("Recent searches",
+          //         style: kTitleStyle.copyWith(color: kSecondayColor)),
+          //     TextButton(
+          //         onPressed: () {
+          //           toast().toastmessage("Not available right now");
+          //         },
+          //         child: Text("Edit",
+          //             style: kTitleStyle.copyWith(color: kPrimaryColor)))
+          //   ],
+          // ),
           //gap,
           StreamBuilder(
             stream: FirebaseFirestore.instance
@@ -113,6 +112,8 @@ class _SearchPageState extends State<SearchPage> {
                     UserModel searchedUser = UserModel.fromMap(userMap);
 
                     return ListTile(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.r)),
                       onTap: () async {
                         InboxModel? inboxModel =
                             await getInboxModel(searchedUser);
@@ -123,38 +124,33 @@ class _SearchPageState extends State<SearchPage> {
                                   builder: (context) => ChatInbox(
                                       targetuser: searchedUser,
                                       inbox: inboxModel!,
-                                      firebaseUser: currentUser!)));
+                                      userModel: widget.userModel,
+                                      firebaseUser: widget.firebaseUser)));
                         }
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => ChatInbox(
-                        //           targetuser: searchedUser,
-                        //           inbox: ,
-                        //         )));
                       },
                       leading: CircleAvatar(
                           backgroundColor: kSecondayColor,
-                          radius: 25,
+                          radius: 23.r,
                           backgroundImage:
                               NetworkImage(searchedUser.pic.toString())),
                       title: Text(searchedUser.name!,
-                          style: kTitleStyle.copyWith(fontSize: 18)),
+                          style: kTitleStyle.copyWith(fontSize: 18.sp)),
                       subtitle: Text(
                         searchedUser.email!,
                         style: kTextStyle,
                       ),
                     );
                   } else {
-                    return const Text("No resuls found!");
+                    return const Center(
+                        child: Text("Searh people with Username"));
                   }
                 } else if (snapshot.hasError) {
-                  return const Text("An error Occurd!");
+                  return const Center(child: Text("An error Occurd!"));
                 } else {
-                  return const Text("No resuls found!");
+                  return const Center(child: Text("No resuls found!"));
                 }
               } else {
-                return const CircularProgressIndicator();
+                return const Center(child: CircularProgressIndicator());
               }
             },
           )

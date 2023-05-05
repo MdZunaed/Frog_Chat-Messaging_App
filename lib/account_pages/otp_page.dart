@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frog_chat/account_pages/input_fields/button.dart';
 import 'package:frog_chat/account_pages/input_fields/otp_field.dart';
-import 'package:frog_chat/account_pages/success.dart';
 import 'package:frog_chat/style.dart';
 
 class OtpPage extends StatelessWidget {
@@ -53,10 +52,10 @@ class OtpPage extends StatelessWidget {
               InkWell(
                 child: Button(text: "Ok Done"),
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SuccessPage()));
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => const SuccessPage()));
                 },
               ),
             ],

@@ -30,6 +30,7 @@ class _PasswordFieldState extends State<PasswordField> {
           obscureText: isObscure,
           cursorColor: kPrimaryColor,
           style: const TextStyle(color: kWhiteColor),
+          textAlignVertical: TextAlignVertical.center,
           decoration: InputDecoration(
               prefixIcon: Icon(CupertinoIcons.asterisk_circle, size: 25.h),
               prefixIconColor: MaterialStateColor.resolveWith((states) =>

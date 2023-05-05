@@ -69,7 +69,7 @@ class GetHistory extends StatelessWidget {
       child: ListTile(
         //tileColor: kDarkColor,
         leading: CircleAvatar(
-            radius: 25.r, backgroundImage: AssetImage("images/" + imageName)),
+            radius: 25.r, backgroundImage: AssetImage("images/$imageName")),
         title: Text(title, style: kTitleStyle.copyWith(fontSize: 20)),
         subtitle: Text(time, style: kTextStyle.copyWith(color: kSecondayColor)),
         trailing: FittedBox(

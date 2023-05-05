@@ -27,7 +27,8 @@ class _SignUpState extends State<SignUp> {
   TextEditingController passController = TextEditingController();
   TextEditingController cpassController = TextEditingController();
   File? imageFile;
-  String downloadImageUrl = "";
+  String picUrl = "";
+  //String downloadImageUrl = "";
 
   void selectImage(ImageSource source) async {
     XFile? pickedImage = await ImagePicker().pickImage(source: source);
@@ -55,6 +56,7 @@ class _SignUpState extends State<SignUp> {
     String email = emailController.text.trim();
     String pass = passController.text.trim();
     String cpass = cpassController.text.trim();
+    UserModel userModel = UserModel();
     UserCredential? userCredential;
     UploadTask uploadTask;
 
@@ -62,34 +64,38 @@ class _SignUpState extends State<SignUp> {
       userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: pass);
       toast().toastmessage("User created");
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const SuccessPage()));
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => SuccessPage(
+                    userModel: userModel,
+                    firebaseUser: userCredential!.user!,
+                  )));
+
       if (userCredential != null) {
         String uid = userCredential.user!.uid;
 
-        UserModel newUser = UserModel(
-          uid: uid,
-          name: name,
-          email: email,
-          pic: downloadImageUrl,
-        );
         uploadTask = FirebaseStorage.instance
             .ref("Profile Pictures")
             .child(FirebaseAuth.instance.currentUser!.uid)
             .putFile(File(imageFile!.path));
 
         TaskSnapshot snapshot = await uploadTask;
-
         String imageUrl = await snapshot.ref.getDownloadURL();
-        downloadImageUrl = imageUrl;
+        picUrl = imageUrl;
 
-        await FirebaseFirestore.instance.collection("users").doc(uid).set({
-          "uid": uid,
-          "name": name,
-          "email": email,
-          "password": pass,
-          "pic": downloadImageUrl
-        });
+        UserModel newUser = UserModel(
+          uid: uid,
+          name: name,
+          email: email,
+          pic: picUrl,
+        );
+        userModel = newUser;
+
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(newUser.uid)
+            .set(newUser.toMap());
       }
     } on FirebaseAuthException catch (error) {
       toast().toastmessage(error.message!);
@@ -107,6 +113,7 @@ class _SignUpState extends State<SignUp> {
       backgroundColor: kBgColor,
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
             child: Column(

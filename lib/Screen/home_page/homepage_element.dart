@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frog_chat/Screen/profile_page/profile_page.dart';
-import 'package:frog_chat/Screen/search_page/search_page.dart';
+import 'package:frog_chat/models/UserModel.dart';
 import '../../style.dart';
 
 class BarIcon extends StatelessWidget {
-  BarIcon({super.key, this.icon});
+  final UserModel userModel;
+  VoidCallback onTap;
+  BarIcon({super.key, this.icon, required this.userModel, required this.onTap});
   IconData? icon;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SearchPage()));
-      },
+      onTap: onTap,
       child: Container(
         margin: const EdgeInsets.all(7).w,
         height: 40.h,
         width: 40.w,
         decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: kDarkColor,
+            color: kBgColor,
             border: Border.all(color: kSecondayColor, width: 2.w)),
         child: const Icon(
           Icons.search,
@@ -33,15 +32,19 @@ class BarIcon extends StatelessWidget {
 }
 
 class BarImage extends StatelessWidget {
-  BarImage({super.key, this.imageName});
+  final UserModel userModel;
   final imageName;
+
+  const BarImage({super.key, required this.userModel, required this.imageName});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const ProfilePage()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ProfilePage(userModel: userModel)));
       },
       child: Container(
         margin: const EdgeInsets.all(7).w,
@@ -52,7 +55,7 @@ class BarImage extends StatelessWidget {
             color: kDarkColor,
             border: Border.all(color: kSecondayColor, width: 2.w),
             image: DecorationImage(
-                image: AssetImage("images/" + imageName), fit: BoxFit.cover)),
+                image: NetworkImage(imageName), fit: BoxFit.cover)),
       ),
     );
   }

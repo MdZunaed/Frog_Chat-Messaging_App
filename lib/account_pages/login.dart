@@ -30,8 +30,7 @@ class _LoginPageState extends State<LoginPage> {
       userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: pass);
       //if (userCredential != null) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const HomePage()));
+
       toast().toastmessage("Login successfully");
       //}
     } on FirebaseAuthException catch (error) {
@@ -47,6 +46,13 @@ class _LoginPageState extends State<LoginPage> {
           await FirebaseFirestore.instance.collection("users").doc(uid).get();
       UserModel userModel =
           UserModel.fromMap(userData.data() as Map<String, dynamic>);
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => HomePage(
+                    userModel: userModel,
+                    firebaseUser: userCredential!.user!,
+                  )));
     }
   }
 
@@ -58,6 +64,7 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: kBgColor,
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30).r,
             child: Column(

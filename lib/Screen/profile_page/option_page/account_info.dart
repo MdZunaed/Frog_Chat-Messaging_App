@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frog_chat/account_pages/input_fields/button.dart';
+import '../../../elements/show_toast.dart';
+import '../../../models/UserModel.dart';
 import '../../../style.dart';
 
 class AccountInfo extends StatefulWidget {
-  const AccountInfo({super.key});
+  final UserModel userModel;
+  const AccountInfo({super.key, required this.userModel});
 
   @override
   State<AccountInfo> createState() => _AccountInfoState();
@@ -26,7 +29,8 @@ class _AccountInfoState extends State<AccountInfo> {
             child: Stack(children: [
               CircleAvatar(
                   radius: 55.r,
-                  backgroundImage: const AssetImage("images/sayed.png")),
+                  backgroundImage:
+                      NetworkImage(widget.userModel.pic.toString())),
               Positioned(
                   right: 0,
                   bottom: 0,
@@ -54,12 +58,20 @@ class _AccountInfoState extends State<AccountInfo> {
             ]),
           ),
           gap,
-          InfoItem(fieldName: "Your Name", fieldInfo: "Abu Sayed"),
+          gap,
           InfoItem(
-              fieldName: "Your email", fieldInfo: "arshansayed21@gmail.com"),
-          InfoItem(fieldName: "Your Number", fieldInfo: "+8801720065881"),
+              fieldName: "Your name",
+              fieldInfo: widget.userModel.name.toString()),
+          InfoItem(
+              fieldName: "Your email",
+              fieldInfo: widget.userModel.email.toString()),
+          InfoItem(fieldName: "Your Number", fieldInfo: ""),
           const Spacer(),
-          Button(text: "Edit Information")
+          InkWell(
+              onTap: () {
+                toast().toastmessage("Not available");
+              },
+              child: Button(text: "Edit Information"))
         ]),
       ),
     );
