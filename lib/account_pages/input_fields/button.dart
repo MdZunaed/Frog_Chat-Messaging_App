@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frog_chat/style.dart';
 
 class Button extends StatelessWidget {
-  Button({required this.text, super.key});
-  String text;
+  const Button({required this.text, super.key});
+  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +25,8 @@ class Button extends StatelessWidget {
 }
 
 class MiniButton extends StatelessWidget {
-  MiniButton({required this.text, super.key});
-  String text;
+  const MiniButton({required this.text, super.key});
+  final String text;
 
   @override
   Widget build(BuildContext context) {

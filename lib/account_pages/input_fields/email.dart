@@ -4,9 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frog_chat/style.dart';
 
 class InputField extends StatelessWidget {
-  InputField({this.controller, required this.text, super.key});
-  String text;
-  TextEditingController? controller;
+  const InputField({required this.controller, required this.text, super.key});
+  final String text;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {

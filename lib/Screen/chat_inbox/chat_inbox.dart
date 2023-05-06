@@ -59,10 +59,7 @@ class _ChatInboxState extends State<ChatInbox> {
     return Scaffold(
       appBar: AppBar(
           backgroundColor: kBgColor,
-          title: InboxAppbar(
-            name: widget.targetuser.name.toString(),
-            imageUrl: widget.targetuser.pic.toString(),
-          )),
+          title: InboxAppbar(targetUser: widget.targetuser)),
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8).r,
@@ -112,7 +109,7 @@ class _ChatInboxState extends State<ChatInbox> {
                                             widget.targetuser.uid)
                                         ? kWhiteColor
                                         : kDarkColor,
-                                    fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w400),
                               )),
                         ],
                       );

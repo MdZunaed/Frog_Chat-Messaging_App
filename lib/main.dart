@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frog_chat/Screen/home_page/home_page.dart';
-import 'package:frog_chat/account_pages/login.dart';
 import 'package:frog_chat/models/UserModel.dart';
 import 'package:frog_chat/models/firebase_helper.dart';
 import 'package:frog_chat/splash_screen.dart';
@@ -25,7 +24,7 @@ void main() async {
       ));
     }
   } else {
-    runApp(NewApp());
+    runApp(const NewApp());
   }
 }
 
@@ -84,7 +83,7 @@ class NewApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           home:
               //const LoginPage(),
-              SplashScreen(
+              const SplashScreen(
                   //userModel: userModel, firebaseUser: firebaseUser
                   ),
         );

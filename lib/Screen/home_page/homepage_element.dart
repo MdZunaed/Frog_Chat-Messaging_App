@@ -6,9 +6,10 @@ import '../../style.dart';
 
 class BarIcon extends StatelessWidget {
   final UserModel userModel;
-  VoidCallback onTap;
-  BarIcon({super.key, this.icon, required this.userModel, required this.onTap});
-  IconData? icon;
+  final VoidCallback onTap;
+  final IconData? icon;
+  const BarIcon(
+      {super.key, this.icon, required this.userModel, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -62,9 +63,9 @@ class BarImage extends StatelessWidget {
 }
 
 class ActiveNow extends StatelessWidget {
-  ActiveNow({super.key, required this.imgName, required this.name});
+  const ActiveNow({super.key, required this.imgName, required this.name});
   final imgName;
-  String name;
+  final String name;
 
   @override
   Widget build(BuildContext context) {

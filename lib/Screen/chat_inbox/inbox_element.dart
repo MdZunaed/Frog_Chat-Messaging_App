@@ -3,15 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frog_chat/Screen/chat_inbox/VideoCall.dart';
 import 'package:frog_chat/Screen/chat_inbox/audio_call.dart';
+import 'package:frog_chat/Screen/chat_inbox/person_info.dart';
 import 'package:frog_chat/style.dart';
 
 import '../../elements/show_toast.dart';
+import '../../models/UserModel.dart';
 
 class InboxAppbar extends StatelessWidget {
-  String name;
-  final imageUrl;
+  final UserModel targetUser;
 
-  InboxAppbar({super.key, required this.name, required this.imageUrl});
+  const InboxAppbar({super.key, required this.targetUser});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class InboxAppbar extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: 22.r,
-          backgroundImage: NetworkImage(imageUrl),
+          backgroundImage: NetworkImage(targetUser.pic.toString()),
         ),
         gaph,
         Expanded(
@@ -29,7 +30,8 @@ class InboxAppbar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(name, style: TextStyle(fontSize: 17.sp)),
+                Text(targetUser.name.toString(),
+                    style: TextStyle(fontSize: 17.sp)),
                 // SizedBox(height: 5.h),
                 // Text("Active now",
                 //     style: TextStyle(fontSize: 11.sp, color: kSecondayColor)),
@@ -42,8 +44,11 @@ class InboxAppbar extends StatelessWidget {
             InkWell(
               child: const Icon(Icons.call, color: kPrimaryColor),
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const AudioCall()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            AudioCall(targetUser: targetUser)));
               },
             ),
             SizedBox(width: 15.w),
@@ -51,30 +56,23 @@ class InboxAppbar extends StatelessWidget {
               child: const Icon(CupertinoIcons.video_camera_solid,
                   size: 30, color: kPrimaryColor),
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const VideoCall()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            VideoCall(targetUser: targetUser)));
               },
             ),
             SizedBox(width: 15.w),
             InkWell(
-              child: const Icon(Icons.info_rounded, color: kPrimaryColor),
-              onTap: () => showDialog(
-                  context: context,
-                  builder: (BuildContext context) => AlertDialog(
-                        backgroundColor: kDarkColor,
-                        title: Text("Darao Mia",
-                            style: kTitleStyle.copyWith(fontSize: 24.sp)),
-                        content: Text("Ei page figma te pai nai, tai kori nai",
-                            style: kTextStyle),
-                        actions: [
-                          TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Text("Ok Dekhtasi"))
-                        ],
-                      )),
-            ),
+                child: const Icon(Icons.info_rounded, color: kPrimaryColor),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              PersonInfo(targetUser: targetUser)));
+                }),
           ],
         ),
       ],
@@ -83,9 +81,9 @@ class InboxAppbar extends StatelessWidget {
 }
 
 class InboxNavbar extends StatefulWidget {
-  TextEditingController controller;
-  VoidCallback onTap;
-  InboxNavbar({super.key, required this.controller, required this.onTap});
+  final TextEditingController controller;
+  final VoidCallback onTap;
+  const InboxNavbar({super.key, required this.controller, required this.onTap});
 
   @override
   State<InboxNavbar> createState() => _InboxNavbarState();
@@ -175,10 +173,10 @@ class _InboxNavbarState extends State<InboxNavbar> {
 }
 
 class SheetItem extends StatelessWidget {
-  IconData icon;
-  String text;
-  VoidCallback onTap;
-  SheetItem(
+  final IconData icon;
+  final String text;
+  final VoidCallback onTap;
+  const SheetItem(
       {super.key, required this.icon, required this.text, required this.onTap});
 
   @override

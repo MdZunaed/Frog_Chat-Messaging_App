@@ -40,7 +40,7 @@ class _SuccessPageState extends State<SuccessPage> {
             ),
             SizedBox(height: 150.h),
             InkWell(
-              child: Button(text: "Go to Home Page"),
+              child: const Button(text: "Go to Home Page"),
               onTap: () {
                 Navigator.popUntil(context, (route) => route.isFirst);
                 Navigator.pushReplacement(

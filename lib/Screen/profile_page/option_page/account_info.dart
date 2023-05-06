@@ -65,13 +65,13 @@ class _AccountInfoState extends State<AccountInfo> {
           InfoItem(
               fieldName: "Your email",
               fieldInfo: widget.userModel.email.toString()),
-          InfoItem(fieldName: "Your Number", fieldInfo: ""),
+          const InfoItem(fieldName: "Your Number", fieldInfo: ""),
           const Spacer(),
           InkWell(
               onTap: () {
                 toast().toastmessage("Not available");
               },
-              child: Button(text: "Edit Information"))
+              child: const Button(text: "Edit Information"))
         ]),
       ),
     );
@@ -79,9 +79,9 @@ class _AccountInfoState extends State<AccountInfo> {
 }
 
 class InfoItem extends StatelessWidget {
-  InfoItem({super.key, required this.fieldName, required this.fieldInfo});
-  String fieldName;
-  String fieldInfo;
+  const InfoItem({super.key, required this.fieldName, required this.fieldInfo});
+  final String fieldName;
+  final String fieldInfo;
 
   @override
   Widget build(BuildContext context) {

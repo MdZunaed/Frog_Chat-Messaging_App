@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../style.dart';
 
 class OtpField extends StatelessWidget {
-  OtpField({this.otpController, super.key});
-  TextEditingController? otpController;
+  const OtpField({this.otpController, super.key});
+  final TextEditingController? otpController;
 
   @override
   Widget build(BuildContext context) {

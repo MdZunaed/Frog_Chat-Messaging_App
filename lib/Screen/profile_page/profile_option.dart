@@ -3,9 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frog_chat/style.dart';
 
 class ProfileOption extends StatelessWidget {
-  ProfileOption({super.key, required this.icon, required this.optionName});
-  IconData icon;
-  String optionName;
+  const ProfileOption(
+      {super.key, required this.icon, required this.optionName});
+  final IconData icon;
+  final String optionName;
 
   @override
   Widget build(BuildContext context) {

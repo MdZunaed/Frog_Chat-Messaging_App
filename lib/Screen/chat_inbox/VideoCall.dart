@@ -1,11 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:frog_chat/models/UserModel.dart';
 import 'package:frog_chat/style.dart';
 
 import 'audio_call.dart';
 
 class VideoCall extends StatefulWidget {
-  const VideoCall({super.key});
+  final UserModel targetUser;
+
+  const VideoCall({super.key, required this.targetUser});
 
   @override
   State<VideoCall> createState() => _VideoCallState();
@@ -19,7 +23,7 @@ class _VideoCallState extends State<VideoCall> {
       appBar: AppBar(
         title: Row(
           children: [
-            Text("Abu Sayed", style: kTitleStyle),
+            Text(widget.targetUser.name.toString(), style: kTitleStyle),
             gaph,
             Text("(1:05:28)", style: kTextStyle),
           ],
@@ -33,12 +37,17 @@ class _VideoCallState extends State<VideoCall> {
           SizedBox(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-              child: const Image(
-                  image: AssetImage("images/sayedb.png"), fit: BoxFit.cover)),
-          const Positioned(
+              child: Image(
+                  image: NetworkImage(widget.targetUser.pic.toString()),
+                  fit: BoxFit.cover)),
+          Positioned(
               top: 30,
-              right: 5,
-              child: Image(image: AssetImage("images/mizanb.png")))
+              right: 10,
+              child: SizedBox(
+                  height: 150.h,
+                  width: 110.w,
+                  child: const Image(
+                      image: AssetImage("images/zunu.jpg"), fit: BoxFit.cover)))
         ],
       )),
       bottomNavigationBar: Container(
@@ -62,7 +71,8 @@ class _VideoCallState extends State<VideoCall> {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: ((context) => const AudioCall())));
+                          builder: ((context) =>
+                              AudioCall(targetUser: widget.targetUser))));
                 },
               ),
               CallOption(icon: CupertinoIcons.speaker_2, color: "disabled"),

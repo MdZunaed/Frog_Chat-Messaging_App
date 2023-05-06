@@ -60,48 +60,60 @@ class _SignUpState extends State<SignUp> {
     UserCredential? userCredential;
     UploadTask uploadTask;
 
-    try {
-      userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: pass);
-      toast().toastmessage("User created");
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => SuccessPage(
-                    userModel: userModel,
-                    firebaseUser: userCredential!.user!,
-                  )));
-
-      if (userCredential != null) {
-        String uid = userCredential.user!.uid;
-
-        uploadTask = FirebaseStorage.instance
-            .ref("Profile Pictures")
-            .child(FirebaseAuth.instance.currentUser!.uid)
-            .putFile(File(imageFile!.path));
-
-        TaskSnapshot snapshot = await uploadTask;
-        String imageUrl = await snapshot.ref.getDownloadURL();
-        picUrl = imageUrl;
-
-        UserModel newUser = UserModel(
-          uid: uid,
-          name: name,
-          email: email,
-          pic: picUrl,
-        );
-        userModel = newUser;
-
-        await FirebaseFirestore.instance
-            .collection("users")
-            .doc(newUser.uid)
-            .set(newUser.toMap());
-      }
-    } on FirebaseAuthException catch (error) {
-      toast().toastmessage(error.message!);
+    if (name == "" || name == "" || pass == "" || cpass == "") {
+      toast().toastmessage("fill all the info");
       setState(() {
         loading = false;
       });
+    } else if (pass != cpass) {
+      toast().toastmessage("password do not match");
+      setState(() {
+        loading = false;
+      });
+    } else {
+      try {
+        userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(email: email, password: pass);
+        toast().toastmessage("User created");
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => SuccessPage(
+                      userModel: userModel,
+                      firebaseUser: userCredential!.user!,
+                    )));
+
+        if (userCredential != null) {
+          String uid = userCredential.user!.uid;
+
+          uploadTask = FirebaseStorage.instance
+              .ref("Profile Pictures")
+              .child(FirebaseAuth.instance.currentUser!.uid)
+              .putFile(File(imageFile!.path));
+
+          TaskSnapshot snapshot = await uploadTask;
+          String imageUrl = await snapshot.ref.getDownloadURL();
+          picUrl = imageUrl;
+
+          UserModel newUser = UserModel(
+            uid: uid,
+            name: name,
+            email: email,
+            pic: picUrl,
+          );
+          userModel = newUser;
+
+          await FirebaseFirestore.instance
+              .collection("users")
+              .doc(newUser.uid)
+              .set(newUser.toMap());
+        }
+      } on FirebaseAuthException catch (error) {
+        toast().toastmessage(error.message!);
+        setState(() {
+          loading = false;
+        });
+      }
     }
   }
 
@@ -201,7 +213,7 @@ class _SignUpState extends State<SignUp> {
                   loading
                       ? const CircularProgressIndicator()
                       : InkWell(
-                          child: Button(text: "Sign Up"),
+                          child: const Button(text: "Sign Up"),
                           onTap: () {
                             setState(() {
                               loading = true;

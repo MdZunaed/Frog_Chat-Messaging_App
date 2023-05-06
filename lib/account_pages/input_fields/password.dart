@@ -5,9 +5,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../style.dart';
 
 class PasswordField extends StatefulWidget {
-  PasswordField({required this.controller, required this.hintText, super.key});
-  String hintText;
-  TextEditingController controller;
+  const PasswordField(
+      {required this.controller, required this.hintText, super.key});
+  final String hintText;
+  final TextEditingController controller;
 
   @override
   State<PasswordField> createState() => _PasswordFieldState();

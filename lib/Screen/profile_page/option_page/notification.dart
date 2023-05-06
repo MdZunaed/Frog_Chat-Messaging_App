@@ -20,19 +20,19 @@ class _NotificationPageState extends State<NotificationPage> {
         padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 25).r,
         child: Column(
           children: [
-            ItemName(text: "Notification"),
+            const ItemName(text: "Notification"),
             gap,
             Row(children: [
               Text("Message", style: kTextStyle.copyWith(color: kPrimaryColor))
             ]),
-            ItemName(text: "Chat"),
-            ItemName(text: "Group's"),
+            const ItemName(text: "Chat"),
+            const ItemName(text: "Group's"),
             gap,
             Row(children: [
               Text("Call's", style: kTextStyle.copyWith(color: kPrimaryColor))
             ]),
-            ItemName(text: "Ringtone"),
-            ItemName(text: "Vibrate"),
+            const ItemName(text: "Ringtone"),
+            const ItemName(text: "Vibrate"),
           ],
         ),
       ),
@@ -41,9 +41,9 @@ class _NotificationPageState extends State<NotificationPage> {
 }
 
 class ItemName extends StatefulWidget {
-  ItemName({super.key, required this.text, this.val});
-  String text;
-  bool? val;
+  const ItemName({super.key, required this.text, this.val});
+  final String text;
+  final bool? val;
 
   @override
   State<ItemName> createState() => _ItemNameState();
@@ -75,8 +75,8 @@ class _ItemNameState extends State<ItemName> {
 }
 
 class OnOff extends StatefulWidget {
-  OnOff({super.key, this.val});
-  bool? val;
+  const OnOff({super.key, this.val});
+  final bool? val;
 
   @override
   State<OnOff> createState() => _OnOffState();

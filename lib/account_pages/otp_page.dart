@@ -31,13 +31,13 @@ class OtpPage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  OtpField(),
+                  const OtpField(),
                   gaph,
-                  OtpField(),
+                  const OtpField(),
                   gaph,
-                  OtpField(),
+                  const OtpField(),
                   gaph,
-                  OtpField(),
+                  const OtpField(),
                 ],
               ),
               gap,
@@ -50,7 +50,7 @@ class OtpPage extends StatelessWidget {
               ]),
               SizedBox(height: 250.h),
               InkWell(
-                child: Button(text: "Ok Done"),
+                child: const Button(text: "Ok Done"),
                 onTap: () {
                   // Navigator.push(
                   //     context,

@@ -2,10 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frog_chat/Screen/chat_inbox/VideoCall.dart';
+import 'package:frog_chat/models/UserModel.dart';
 import 'package:frog_chat/style.dart';
 
 class AudioCall extends StatefulWidget {
-  const AudioCall({super.key});
+  final UserModel targetUser;
+
+  const AudioCall({super.key, required this.targetUser});
 
   @override
   State<AudioCall> createState() => _AudioCallState();
@@ -22,12 +25,12 @@ class _AudioCallState extends State<AudioCall> {
           child: Column(
             children: [
               SizedBox(height: 40.h),
-              const CircleAvatar(
+              CircleAvatar(
                 radius: 55,
-                backgroundImage: AssetImage("images/sayed.png"),
+                backgroundImage: NetworkImage(widget.targetUser.pic.toString()),
               ),
               gap,
-              Text("Abu Sayed", style: kHeadingStyle),
+              Text(widget.targetUser.name.toString(), style: kHeadingStyle),
               SizedBox(height: 8.h),
               Text("1:10:32", style: kTitleStyle)
             ],
@@ -55,7 +58,8 @@ class _AudioCallState extends State<AudioCall> {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: ((context) => const VideoCall())));
+                          builder: ((context) =>
+                              VideoCall(targetUser: widget.targetUser))));
                 },
               ),
               CallOption(icon: CupertinoIcons.speaker_2, color: "disabled"),

@@ -29,7 +29,7 @@ class _CreateGroupState extends State<CreateGroup> {
               ],
             ),
             gap,
-            SearchField(text: "Search people"),
+            const SearchField(text: "Search people"),
             gap,
             Row(children: [
               Text("Suggetion", style: kTitleStyle),

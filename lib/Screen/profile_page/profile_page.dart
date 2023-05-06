@@ -53,7 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         builder: ((context) =>
                             AccountInfo(userModel: widget.userModel))));
               },
-              child: ProfileOption(
+              child: const ProfileOption(
                   icon: Icons.person_rounded,
                   optionName: "Account Information"),
             ),
@@ -64,7 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     MaterialPageRoute(
                         builder: ((context) => const NotificationPage())));
               },
-              child: ProfileOption(
+              child: const ProfileOption(
                   icon: Icons.notifications,
                   optionName: "Notification & Sound"),
             ),
@@ -76,10 +76,11 @@ class _ProfilePageState extends State<ProfilePage> {
                       MaterialPageRoute(
                           builder: ((context) => const CallHistory())));
                 },
-                child: ProfileOption(
+                child: const ProfileOption(
                     icon: Icons.call, optionName: "Call History")),
             InkWell(
-              child: ProfileOption(icon: Icons.logout, optionName: "Logout"),
+              child:
+                  const ProfileOption(icon: Icons.logout, optionName: "Logout"),
               onTap: () {
                 showDialog(
                     context: context,

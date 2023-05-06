@@ -104,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                 loading
                     ? const CircularProgressIndicator()
                     : InkWell(
-                        child: Button(text: "Log in"),
+                        child: const Button(text: "Log in"),
                         onTap: () {
                           logIn();
                           setState(() {
@@ -125,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
+                    children: const [
                       MiniButton(text: "Sign up"),
                     ],
                   ),

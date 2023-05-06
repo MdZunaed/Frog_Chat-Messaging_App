@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../style.dart';
 
 class SearchField extends StatelessWidget {
-  SearchField({super.key, required this.text});
-  String text;
+  const SearchField({super.key, required this.text});
+  final String text;
 
   @override
   Widget build(BuildContext context) {

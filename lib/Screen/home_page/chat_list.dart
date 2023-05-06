@@ -21,54 +21,6 @@ class ChatList extends StatefulWidget {
 }
 
 class _ChatListState extends State<ChatList> {
-  List person = [
-    "Alif Sarkar",
-    "Mahmudul Hasan",
-    "Md Mizan hossen",
-    "Abu Sayed",
-    "Md Zunaed",
-    "Alamin Hossen",
-    "Mahmudul Hasan",
-    "Md Mizan",
-    "Abu Sayed",
-    "Md Zunaed",
-    "Alamin Hossen",
-    "Mahmudul Hasan",
-    "Alif Sarkar",
-  ];
-
-  List msg = [
-    "ki khbr",
-    "kmn aso",
-    "group e aho",
-    "movie ta dao",
-    "khida lagse",
-    "ki khbr",
-    "kmn aso",
-    "group e aho",
-    "movie ta dao",
-    "khida lagse",
-    "ki khbr",
-    "kmn aso",
-    "ki khbr",
-  ];
-
-  List image = [
-    "images/alif.jpg",
-    "images/buira.jpg",
-    "images/mizan.jpg",
-    "images/sayed.png",
-    "images/zunu.jpg",
-    "images/alamin.jpg",
-    "images/buira.jpg",
-    "images/mizan.jpg",
-    "images/sayed.png",
-    "images/zunu.jpg",
-    "images/alamin.jpg",
-    "images/buira.jpg",
-    "images/alif.jpg",
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,25 +91,31 @@ class _ChatListState extends State<ChatList> {
                                               image: NetworkImage(
                                                   targetUser.pic.toString())))),
                                   gaph,
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(targetUser.name.toString(),
-                                          style: kTitleStyle.copyWith(
-                                              fontSize: 16)),
-                                      SizedBox(height: 4.h),
-                                      (inboxModel.lastMessage != "")
-                                          ? Text(
-                                              inboxModel.lastMessage.toString(),
-                                              style: kTitleStyle.copyWith(
-                                                  color: kSecondayColor))
-                                          : Text(
-                                              "Say hello to ${targetUser.name} !",
-                                              style: kTitleStyle.copyWith(
-                                                  color: kWhiteColor)),
-                                    ],
+                                  Flexible(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(targetUser.name.toString(),
+                                            style: kTitleStyle),
+                                        SizedBox(height: 4.h),
+                                        (inboxModel.lastMessage != "")
+                                            ? Text(
+                                                inboxModel.lastMessage
+                                                    .toString(),
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                                style: kTitleStyle.copyWith(
+                                                  color: kSecondayColor,
+                                                ))
+                                            : Text(
+                                                "Say hello to ${targetUser.name} !",
+                                                style: kTextStyle.copyWith(
+                                                    color: kWhiteColor)),
+                                      ],
+                                    ),
                                   ),
                                   // const Spacer(),
                                   // const Text("Active"),
