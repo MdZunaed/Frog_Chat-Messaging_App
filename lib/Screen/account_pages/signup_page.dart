@@ -4,121 +4,33 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:frog_chat/account_pages/input_fields/button.dart';
-import 'package:frog_chat/account_pages/input_fields/email.dart';
-import 'package:frog_chat/account_pages/success.dart';
-import 'package:frog_chat/elements/show_toast.dart';
+import 'package:frog_chat/Screen/account_pages/success_page.dart';
 import 'package:frog_chat/models/UserModel.dart';
 import 'package:frog_chat/style.dart';
+import 'package:frog_chat/widget/button.dart';
+import 'package:frog_chat/widget/email_field.dart';
+import 'package:frog_chat/widget/password_field.dart';
+import 'package:frog_chat/widget/show_toast.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'input_fields/password.dart';
 
-class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+class SignupPage extends StatefulWidget {
+  const SignupPage({super.key});
 
   @override
-  State<SignUp> createState() => _SignUpState();
+  State<SignupPage> createState() => _SignupPageState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _SignupPageState extends State<SignupPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
-  TextEditingController cpassController = TextEditingController();
+  TextEditingController cPassController = TextEditingController();
+  bool loading = false;
   File? imageFile;
   String picUrl = "";
+
   //String downloadImageUrl = "";
-
-  void selectImage(ImageSource source) async {
-    XFile? pickedImage = await ImagePicker().pickImage(source: source);
-
-    if (pickedImage != null) {
-      cropImage(pickedImage);
-    }
-  }
-
-  void cropImage(XFile file) async {
-    CroppedFile? croppedImage = await ImageCropper().cropImage(
-        cropStyle: CropStyle.circle,
-        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
-        compressQuality: 30,
-        sourcePath: file.path);
-    if (croppedImage != null) {
-      setState(() {
-        imageFile = File(croppedImage.path);
-      });
-    }
-  }
-
-  void createAccount() async {
-    String name = nameController.text.trim();
-    String email = emailController.text.trim();
-    String pass = passController.text.trim();
-    String cpass = cpassController.text.trim();
-    UserModel userModel = UserModel();
-    UserCredential? userCredential;
-    UploadTask uploadTask;
-
-    if (name == "" || name == "" || pass == "" || cpass == "") {
-      toast().toastmessage("fill all the info");
-      setState(() {
-        loading = false;
-      });
-    } else if (pass != cpass) {
-      toast().toastmessage("password do not match");
-      setState(() {
-        loading = false;
-      });
-    } else {
-      try {
-        userCredential = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(email: email, password: pass);
-        toast().toastmessage("User created");
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => SuccessPage(
-                      userModel: userModel,
-                      firebaseUser: userCredential!.user!,
-                    )));
-
-        if (userCredential != null) {
-          String uid = userCredential.user!.uid;
-
-          uploadTask = FirebaseStorage.instance
-              .ref("Profile Pictures")
-              .child(FirebaseAuth.instance.currentUser!.uid)
-              .putFile(File(imageFile!.path));
-
-          TaskSnapshot snapshot = await uploadTask;
-          String imageUrl = await snapshot.ref.getDownloadURL();
-          picUrl = imageUrl;
-
-          UserModel newUser = UserModel(
-            uid: uid,
-            name: name,
-            email: email,
-            pic: picUrl,
-          );
-          userModel = newUser;
-
-          await FirebaseFirestore.instance
-              .collection("users")
-              .doc(newUser.uid)
-              .set(newUser.toMap());
-        }
-      } on FirebaseAuthException catch (error) {
-        toast().toastmessage(error.message!);
-        setState(() {
-          loading = false;
-        });
-      }
-    }
-  }
-
-  bool loading = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -202,24 +114,20 @@ class _SignUpState extends State<SignUp> {
                   gap,
                   PasswordField(
                       controller: passController,
-                      hintText: "Enter yout Password"),
+                      hintText: "Enter your Password"),
                   gap,
                   PasswordField(
-                      controller: cpassController,
+                      controller: cPassController,
                       hintText: "Confirm Password"),
                   gap,
                   gap,
                   gap,
                   loading
                       ? const CircularProgressIndicator()
-                      : InkWell(
-                          child: const Button(text: "Sign Up"),
+                      : Button(
+                          text: "Sign Up",
                           onTap: () {
-                            setState(() {
-                              loading = true;
-                            });
                             createAccount();
-                            //Navigator.push(context,MaterialPageRoute(builder: (context) => const OtpPage()));
                           },
                         ),
                 ]),
@@ -227,5 +135,100 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
     );
+  }
+
+  void selectImage(ImageSource source) async {
+    XFile? pickedImage = await ImagePicker().pickImage(source: source);
+
+    if (pickedImage != null) {
+      cropImage(pickedImage);
+    }
+  }
+
+  void cropImage(XFile file) async {
+    CroppedFile? croppedImage = await ImageCropper().cropImage(
+        cropStyle: CropStyle.circle,
+        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+        compressQuality: 30,
+        sourcePath: file.path);
+    if (croppedImage != null) {
+      setState(() {
+        imageFile = File(croppedImage.path);
+      });
+    }
+  }
+
+  void createAccount() async {
+    setState(() {
+      loading = true;
+    });
+    String name = nameController.text.trim();
+    String email = emailController.text.trim();
+    String pass = passController.text.trim();
+    String cPass = cPassController.text.trim();
+    UserModel userModel = UserModel();
+    UserCredential? userCredential;
+    UploadTask uploadTask;
+
+    if (name == "" || email == "" || pass == "" || cPass == "") {
+      toast().toastmessage("fill all the info");
+      setState(() {
+        loading = false;
+      });
+    } else if (pass != cPass) {
+      toast().toastmessage("password do not match");
+      setState(() {
+        loading = false;
+      });
+    } else {
+      try {
+        userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(email: email, password: pass);
+        toast().toastmessage("User created");
+        setState(() {
+          loading = false;
+        });
+        if (mounted) {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => SuccessPage(
+                        userModel: userModel,
+                        firebaseUser: userCredential!.user!,
+                      )));
+        }
+
+        if (userCredential != null) {
+          String uid = userCredential.user!.uid;
+
+          uploadTask = FirebaseStorage.instance
+              .ref("Profile Pictures")
+              .child(FirebaseAuth.instance.currentUser!.uid)
+              .putFile(File(imageFile!.path));
+
+          TaskSnapshot snapshot = await uploadTask;
+          String imageUrl = await snapshot.ref.getDownloadURL();
+          picUrl = imageUrl;
+
+          UserModel newUser = UserModel(
+            uid: uid,
+            name: name,
+            email: email,
+            pic: picUrl,
+          );
+          userModel = newUser;
+
+          await FirebaseFirestore.instance
+              .collection("users")
+              .doc(newUser.uid)
+              .set(newUser.toMap());
+        }
+      } on FirebaseAuthException catch (error) {
+        toast().toastmessage(error.message!);
+        setState(() {
+          loading = false;
+        });
+      }
+    }
   }
 }

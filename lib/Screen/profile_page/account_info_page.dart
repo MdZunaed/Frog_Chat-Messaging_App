@@ -1,26 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:frog_chat/account_pages/input_fields/button.dart';
-import '../../../elements/show_toast.dart';
-import '../../../models/UserModel.dart';
-import '../../../style.dart';
+import 'package:frog_chat/widget/button.dart';
+import 'package:frog_chat/widget/show_toast.dart';
+import '../../models/UserModel.dart';
+import '../../style.dart';
 
-class AccountInfo extends StatefulWidget {
+class AccountInfoPage extends StatelessWidget {
   final UserModel userModel;
-  const AccountInfo({super.key, required this.userModel});
 
-  @override
-  State<AccountInfo> createState() => _AccountInfoState();
-}
+  const AccountInfoPage({super.key, required this.userModel});
 
-class _AccountInfoState extends State<AccountInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kBgColor,
-        title: const Text("Account Information"),
-      ),
+          backgroundColor: kBgColor, title: const Text("Account Information")),
       backgroundColor: kBgColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 25),
@@ -29,8 +23,7 @@ class _AccountInfoState extends State<AccountInfo> {
             child: Stack(children: [
               CircleAvatar(
                   radius: 55.r,
-                  backgroundImage:
-                      NetworkImage(widget.userModel.pic.toString())),
+                  backgroundImage: NetworkImage(userModel.pic.toString())),
               Positioned(
                   right: 0,
                   bottom: 0,
@@ -60,18 +53,17 @@ class _AccountInfoState extends State<AccountInfo> {
           gap,
           gap,
           InfoItem(
-              fieldName: "Your name",
-              fieldInfo: widget.userModel.name.toString()),
+              fieldName: "Your name", fieldInfo: userModel.name.toString()),
           InfoItem(
-              fieldName: "Your email",
-              fieldInfo: widget.userModel.email.toString()),
+              fieldName: "Your email", fieldInfo: userModel.email.toString()),
           const InfoItem(fieldName: "Your Number", fieldInfo: ""),
           const Spacer(),
-          InkWell(
-              onTap: () {
-                toast().toastmessage("Not available");
-              },
-              child: const Button(text: "Edit Information"))
+          Button(
+            text: "Edit Information",
+            onTap: () {
+              toast().toastmessage("Not available");
+            },
+          )
         ]),
       ),
     );
@@ -80,6 +72,7 @@ class _AccountInfoState extends State<AccountInfo> {
 
 class InfoItem extends StatelessWidget {
   const InfoItem({super.key, required this.fieldName, required this.fieldInfo});
+
   final String fieldName;
   final String fieldInfo;
 

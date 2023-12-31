@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frog_chat/Screen/profile_page/profile_page.dart';
 import 'package:frog_chat/models/UserModel.dart';
-import '../../style.dart';
+import '../style.dart';
 
 class BarIcon extends StatelessWidget {
   final UserModel userModel;

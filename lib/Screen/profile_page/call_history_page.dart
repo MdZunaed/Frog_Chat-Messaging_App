@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../style.dart';
+import '../../style.dart';
 
-class CallHistory extends StatefulWidget {
-  const CallHistory({super.key});
+class CallHistoryPage extends StatelessWidget {
+  const CallHistoryPage({super.key});
 
-  @override
-  State<CallHistory> createState() => _CallHistoryState();
-}
-
-class _CallHistoryState extends State<CallHistory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +16,7 @@ class _CallHistoryState extends State<CallHistory> {
         padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
         child: ListView(
           physics: const BouncingScrollPhysics(),
-          children: [
+          children: const [
             GetHistory(
               icon: "Dialed",
               imageName: "zunu.jpg",
@@ -49,10 +44,11 @@ class _CallHistoryState extends State<CallHistory> {
 
 class GetHistory extends StatelessWidget {
   final imageName;
-  String title;
-  String time;
+  final String title;
+  final String time;
   final String icon;
-  GetHistory({
+
+  const GetHistory({
     super.key,
     required this.imageName,
     required this.title,

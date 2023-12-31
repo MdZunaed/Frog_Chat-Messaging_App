@@ -2,25 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:frog_chat/Screen/chat_inbox/chat_inbox.dart';
+import 'package:frog_chat/Screen/chat_inbox/chat_inbox_page.dart';
 import 'package:frog_chat/Screen/search_page/search_page.dart';
 import 'package:frog_chat/models/InboxModel.dart';
 import 'package:frog_chat/models/UserModel.dart';
 import 'package:frog_chat/models/firebase_helper.dart';
 import 'package:frog_chat/style.dart';
 
-class ChatList extends StatefulWidget {
+class ChatListPage extends StatelessWidget {
   final UserModel userModel;
   final User firebaseUser;
 
-  const ChatList(
+  const ChatListPage(
       {super.key, required this.userModel, required this.firebaseUser});
 
-  @override
-  State<ChatList> createState() => _ChatListState();
-}
-
-class _ChatListState extends State<ChatList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,8 +25,7 @@ class _ChatListState extends State<ChatList> {
               context,
               MaterialPageRoute(
                   builder: (context) => SearchPage(
-                      userModel: widget.userModel,
-                      firebaseUser: widget.firebaseUser)));
+                      userModel: userModel, firebaseUser: firebaseUser)));
         },
         backgroundColor: kPrimaryColor,
         child: const Icon(Icons.person_add, color: kDarkColor),
@@ -39,7 +33,7 @@ class _ChatListState extends State<ChatList> {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("inboxes")
-            .where("users", arrayContains: widget.userModel.uid)
+            .where("users", arrayContains: userModel.uid)
             .orderBy("chatTime")
             .snapshots(),
         builder: (context, snapshot) {
@@ -55,7 +49,7 @@ class _ChatListState extends State<ChatList> {
 
                   Map<String, dynamic> persons = inboxModel.persons!;
                   List<String> personKeys = persons.keys.toList();
-                  personKeys.remove(widget.userModel.uid);
+                  personKeys.remove(userModel.uid);
                   return FutureBuilder(
                     future: FirebaseHelper.userModelByUid(personKeys[0]),
                     builder: (context, userData) {
@@ -68,11 +62,11 @@ class _ChatListState extends State<ChatList> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: ((context) => ChatInbox(
-                                            userModel: widget.userModel,
-                                            firebaseUser: widget.firebaseUser,
+                                      builder: ((context) => ChatInboxPage(
+                                            userModel: userModel,
+                                            firebaseUser: firebaseUser,
                                             inbox: inboxModel,
-                                            targetuser: targetUser,
+                                            targetUser: targetUser,
                                           ))));
                             },
                             child: Container(

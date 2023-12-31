@@ -4,9 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frog_chat/style.dart';
 import '../../models/UserModel.dart';
 import '../search_page/search_page.dart';
-import 'chat_list.dart';
-import 'group_list.dart';
-import 'homepage_element.dart';
+import 'chat_list_page.dart';
+import 'group_list_page.dart';
+import '../../widget/homepage_element.dart';
 
 class HomePage extends StatefulWidget {
   final UserModel userModel;
@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             //     ],
             //   ),
             // ),
-            TabBar(
+            TabBar(dividerColor: Colors.transparent,
                 controller: tabController,
                 isScrollable: true,
                 unselectedLabelColor: Colors.white70,
@@ -98,10 +98,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 controller: tabController,
                 physics: const BouncingScrollPhysics(),
                 children: [
-                  ChatList(
+                  ChatListPage(
                       userModel: widget.userModel,
                       firebaseUser: widget.firebaseUser),
-                  GroupList(),
+                  const GroupListPage(),
                 ],
               ),
             ),

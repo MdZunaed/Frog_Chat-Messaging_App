@@ -2,64 +2,41 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:frog_chat/Screen/chat_inbox/inbox_element.dart';
+import 'package:frog_chat/widget/inbox_element.dart';
 import 'package:frog_chat/main.dart';
 import 'package:frog_chat/models/InboxModel.dart';
 import 'package:frog_chat/models/UserModel.dart';
 import 'package:frog_chat/models/messageModel.dart';
 import 'package:frog_chat/style.dart';
 
-class ChatInbox extends StatefulWidget {
+class ChatInboxPage extends StatefulWidget {
   final UserModel userModel;
-  final UserModel targetuser;
+  final UserModel targetUser;
   final User firebaseUser;
   final InboxModel inbox;
 
-  const ChatInbox(
+  const ChatInboxPage(
       {super.key,
-      required this.targetuser,
+      required this.targetUser,
       required this.inbox,
       required this.firebaseUser,
       required this.userModel});
 
   @override
-  State<ChatInbox> createState() => _ChatInboxState();
+  State<ChatInboxPage> createState() => _ChatInboxPageState();
 }
 
-class _ChatInboxState extends State<ChatInbox> {
+class _ChatInboxPageState extends State<ChatInboxPage> {
   TextEditingController msgController = TextEditingController();
 
-  void sendMsg() async {
-    String msg = msgController.text.trim();
-    msgController.clear();
-    if (msg != null) {
-      MessageModel newMessage = MessageModel(
-        messageId: uuid.v1(),
-        sender: widget.userModel.uid,
-        creratedOn: DateTime.now().toString(),
-        text: msg,
-        seen: false,
-      );
-      FirebaseFirestore.instance
-          .collection("inboxes")
-          .doc(widget.inbox.inboxId)
-          .collection("messages")
-          .doc(newMessage.messageId)
-          .set(newMessage.toMap());
-      widget.inbox.lastMessage = msg;
-      FirebaseFirestore.instance
-          .collection("inboxes")
-          .doc(widget.inbox.inboxId)
-          .set(widget.inbox.toMap());
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
           backgroundColor: kBgColor,
-          title: InboxAppbar(targetUser: widget.targetuser)),
+          title: InboxAppbar(targetUser: widget.targetUser)),
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8).r,
@@ -85,7 +62,7 @@ class _ChatInboxState extends State<ChatInbox> {
                               as Map<String, dynamic>);
                       return Row(
                         mainAxisAlignment:
-                            (currentMessage.sender == widget.targetuser.uid)
+                            (currentMessage.sender == widget.targetUser.uid)
                                 ? MainAxisAlignment.start
                                 : MainAxisAlignment.end,
                         children: [
@@ -98,7 +75,7 @@ class _ChatInboxState extends State<ChatInbox> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   color: (currentMessage.sender ==
-                                          widget.targetuser.uid)
+                                          widget.targetUser.uid)
                                       ? kDarkColor
                                       : kPrimaryColor),
                               child: Text(
@@ -106,7 +83,7 @@ class _ChatInboxState extends State<ChatInbox> {
                                 style: TextStyle(
                                     fontSize: 16.sp,
                                     color: (currentMessage.sender ==
-                                            widget.targetuser.uid)
+                                            widget.targetUser.uid)
                                         ? kWhiteColor
                                         : kDarkColor,
                                     fontWeight: FontWeight.w400),
@@ -121,7 +98,7 @@ class _ChatInboxState extends State<ChatInbox> {
                   );
                 } else {
                   Center(
-                    child: Text("Say Hi to ${widget.targetuser.name}"),
+                    child: Text("Say Hi to ${widget.targetUser.name}"),
                   );
                 }
               } else {
@@ -139,5 +116,29 @@ class _ChatInboxState extends State<ChatInbox> {
         ]),
       )),
     );
+  }
+  void sendMsg() async {
+    String msg = msgController.text.trim();
+    msgController.clear();
+    if (msg != null) {
+      MessageModel newMessage = MessageModel(
+        messageId: uuid.v1(),
+        sender: widget.userModel.uid,
+        creratedOn: DateTime.now().toString(),
+        text: msg,
+        seen: false,
+      );
+      FirebaseFirestore.instance
+          .collection("inboxes")
+          .doc(widget.inbox.inboxId)
+          .collection("messages")
+          .doc(newMessage.messageId)
+          .set(newMessage.toMap());
+      widget.inbox.lastMessage = msg;
+      FirebaseFirestore.instance
+          .collection("inboxes")
+          .doc(widget.inbox.inboxId)
+          .set(widget.inbox.toMap());
+    }
   }
 }

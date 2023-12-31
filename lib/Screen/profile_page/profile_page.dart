@@ -1,17 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:frog_chat/Screen/profile_page/option_page/account_info.dart';
-import 'package:frog_chat/Screen/profile_page/option_page/call_history.dart';
-import 'package:frog_chat/Screen/profile_page/option_page/notification.dart';
-import 'package:frog_chat/Screen/profile_page/profile_option.dart';
-import 'package:frog_chat/account_pages/login.dart';
+import 'package:frog_chat/Screen/account_pages/login_page.dart';
+import 'package:frog_chat/Screen/profile_page/account_info_page.dart';
+import 'package:frog_chat/Screen/profile_page/call_history_page.dart';
+import 'package:frog_chat/Screen/profile_page/notification_page.dart';
+import 'package:frog_chat/widget/profile_option.dart';
 import 'package:frog_chat/models/UserModel.dart';
 import 'package:frog_chat/style.dart';
-import 'package:frog_chat/elements/show_toast.dart';
+import 'package:frog_chat/widget/show_toast.dart';
 
 class ProfilePage extends StatefulWidget {
   final UserModel userModel;
+
   const ProfilePage({super.key, required this.userModel});
 
   @override
@@ -19,13 +20,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  void logout() async {
-    await FirebaseAuth.instance.signOut();
-    Navigator.popUntil(context, (route) => route.isFirst);
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const LoginPage()));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +45,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     context,
                     MaterialPageRoute(
                         builder: ((context) =>
-                            AccountInfo(userModel: widget.userModel))));
+                            AccountInfoPage(userModel: widget.userModel))));
               },
               child: const ProfileOption(
                   icon: Icons.person_rounded,
@@ -74,7 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: ((context) => const CallHistory())));
+                          builder: ((context) => const CallHistoryPage())));
                 },
                 child: const ProfileOption(
                     icon: Icons.call, optionName: "Call History")),
@@ -111,5 +105,14 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       )),
     );
+  }
+
+  void logout() async {
+    await FirebaseAuth.instance.signOut();
+    if (mounted) {
+      Navigator.popUntil(context, (route) => route.isFirst);
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const LoginPage()));
+    }
   }
 }

@@ -4,18 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frog_chat/models/UserModel.dart';
 import 'package:frog_chat/style.dart';
 
-import 'audio_call.dart';
+import 'audio_call_page.dart';
 
-class VideoCall extends StatefulWidget {
+class VideoCallPage extends StatelessWidget {
   final UserModel targetUser;
 
-  const VideoCall({super.key, required this.targetUser});
+  const VideoCallPage({super.key, required this.targetUser});
 
-  @override
-  State<VideoCall> createState() => _VideoCallState();
-}
-
-class _VideoCallState extends State<VideoCall> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +18,7 @@ class _VideoCallState extends State<VideoCall> {
       appBar: AppBar(
         title: Row(
           children: [
-            Text(widget.targetUser.name.toString(), style: kTitleStyle),
+            Text(targetUser.name.toString(), style: kTitleStyle),
             gaph,
             Text("(1:05:28)", style: kTextStyle),
           ],
@@ -38,7 +33,7 @@ class _VideoCallState extends State<VideoCall> {
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
               child: Image(
-                  image: NetworkImage(widget.targetUser.pic.toString()),
+                  image: NetworkImage(targetUser.pic.toString()),
                   fit: BoxFit.cover)),
           Positioned(
               top: 30,
@@ -72,11 +67,11 @@ class _VideoCallState extends State<VideoCall> {
                       context,
                       MaterialPageRoute(
                           builder: ((context) =>
-                              AudioCall(targetUser: widget.targetUser))));
+                              AudioCallPage(targetUser: targetUser))));
                 },
               ),
-              CallOption(icon: CupertinoIcons.speaker_2, color: "disabled"),
-              CallOption(icon: Icons.mic, color: "enabled"),
+              const CallOption(icon: CupertinoIcons.speaker_2, color: "disabled"),
+              const CallOption(icon: Icons.mic, color: "enabled"),
               CallOption(
                 icon: Icons.call,
                 color: "end",

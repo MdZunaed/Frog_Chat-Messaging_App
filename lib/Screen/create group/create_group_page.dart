@@ -2,16 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frog_chat/style.dart';
 
-import 'group_element.dart';
+import '../../widget/create_group_element.dart';
 
-class CreateGroup extends StatefulWidget {
-  const CreateGroup({super.key});
+class CreateGroupPage extends StatelessWidget {
+  const CreateGroupPage({super.key});
 
-  @override
-  State<CreateGroup> createState() => _CreateGroupState();
-}
-
-class _CreateGroupState extends State<CreateGroup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,10 +24,10 @@ class _CreateGroupState extends State<CreateGroup> {
               ],
             ),
             gap,
-            const SearchField(text: "Search people"),
+            const GroupSearchField(text: "Search people"),
             gap,
             Row(children: [
-              Text("Suggetion", style: kTitleStyle),
+              Text("Suggestion", style: kTitleStyle),
               gaph,
               Icon(Icons.arrow_downward, color: kSecondayColor, size: 20.h)
             ]),

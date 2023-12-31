@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:frog_chat/Screen/chat_inbox/VideoCall.dart';
-import 'package:frog_chat/Screen/chat_inbox/audio_call.dart';
-import 'package:frog_chat/Screen/chat_inbox/person_info.dart';
+import 'package:frog_chat/Screen/chat_inbox/video_call_page.dart';
+import 'package:frog_chat/Screen/chat_inbox/audio_call_page.dart';
+import 'package:frog_chat/Screen/chat_inbox/person_info_page.dart';
 import 'package:frog_chat/style.dart';
-
-import '../../elements/show_toast.dart';
-import '../../models/UserModel.dart';
+import 'package:frog_chat/widget/show_toast.dart';
+import '../models/UserModel.dart';
 
 class InboxAppbar extends StatelessWidget {
   final UserModel targetUser;
@@ -48,7 +47,7 @@ class InboxAppbar extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            AudioCall(targetUser: targetUser)));
+                            AudioCallPage(targetUser: targetUser)));
               },
             ),
             SizedBox(width: 15.w),
@@ -60,7 +59,7 @@ class InboxAppbar extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            VideoCall(targetUser: targetUser)));
+                            VideoCallPage(targetUser: targetUser)));
               },
             ),
             SizedBox(width: 15.w),
@@ -71,7 +70,7 @@ class InboxAppbar extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              PersonInfo(targetUser: targetUser)));
+                              PersonInfoPage(targetUser: targetUser)));
                 }),
           ],
         ),
@@ -83,6 +82,7 @@ class InboxAppbar extends StatelessWidget {
 class InboxNavbar extends StatefulWidget {
   final TextEditingController controller;
   final VoidCallback onTap;
+
   const InboxNavbar({super.key, required this.controller, required this.onTap});
 
   @override
@@ -176,6 +176,7 @@ class SheetItem extends StatelessWidget {
   final IconData icon;
   final String text;
   final VoidCallback onTap;
+
   const SheetItem(
       {super.key, required this.icon, required this.text, required this.onTap});
 

@@ -3,15 +3,11 @@ import 'package:frog_chat/style.dart';
 
 import '../../models/UserModel.dart';
 
-class PersonInfo extends StatefulWidget {
+class PersonInfoPage extends StatelessWidget {
   final UserModel targetUser;
-  const PersonInfo({super.key, required this.targetUser});
 
-  @override
-  State<PersonInfo> createState() => _PersonInfoState();
-}
+  const PersonInfoPage({super.key, required this.targetUser});
 
-class _PersonInfoState extends State<PersonInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,11 +35,10 @@ class _PersonInfoState extends State<PersonInfo> {
               gap,
               CircleAvatar(
                   radius: 50,
-                  backgroundImage:
-                      NetworkImage(widget.targetUser.pic.toString())),
+                  backgroundImage: NetworkImage(targetUser.pic.toString())),
               gap,
               Text(
-                widget.targetUser.name.toString(),
+                targetUser.name.toString(),
                 style: kHeadingStyle,
               )
             ],

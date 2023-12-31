@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:frog_chat/account_pages/login.dart';
+import 'package:frog_chat/Screen/account_pages/login_page.dart';
 import 'package:frog_chat/style.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -37,14 +37,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: kBgColor,
       body: SafeArea(
         child: SizedBox(
           width: double.infinity,
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 Image(
                   image: AssetImage("images/frog-splash.png"),
                   width: 250,

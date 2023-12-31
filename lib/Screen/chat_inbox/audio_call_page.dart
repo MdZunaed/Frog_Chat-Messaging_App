@@ -1,20 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:frog_chat/Screen/chat_inbox/VideoCall.dart';
+import 'package:frog_chat/Screen/chat_inbox/video_call_page.dart';
 import 'package:frog_chat/models/UserModel.dart';
 import 'package:frog_chat/style.dart';
 
-class AudioCall extends StatefulWidget {
+class AudioCallPage extends StatelessWidget {
   final UserModel targetUser;
 
-  const AudioCall({super.key, required this.targetUser});
+  const AudioCallPage({super.key, required this.targetUser});
 
-  @override
-  State<AudioCall> createState() => _AudioCallState();
-}
-
-class _AudioCallState extends State<AudioCall> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,10 +22,10 @@ class _AudioCallState extends State<AudioCall> {
               SizedBox(height: 40.h),
               CircleAvatar(
                 radius: 55,
-                backgroundImage: NetworkImage(widget.targetUser.pic.toString()),
+                backgroundImage: NetworkImage(targetUser.pic.toString()),
               ),
               gap,
-              Text(widget.targetUser.name.toString(), style: kHeadingStyle),
+              Text(targetUser.name.toString(), style: kHeadingStyle),
               SizedBox(height: 8.h),
               Text("1:10:32", style: kTitleStyle)
             ],
@@ -59,11 +54,11 @@ class _AudioCallState extends State<AudioCall> {
                       context,
                       MaterialPageRoute(
                           builder: ((context) =>
-                              VideoCall(targetUser: widget.targetUser))));
+                              VideoCallPage(targetUser: targetUser))));
                 },
               ),
-              CallOption(icon: CupertinoIcons.speaker_2, color: "disabled"),
-              CallOption(icon: Icons.mic, color: "enabled"),
+              const CallOption(icon: CupertinoIcons.speaker_2, color: "disabled"),
+              const CallOption(icon: Icons.mic, color: "enabled"),
               CallOption(
                 icon: Icons.call,
                 color: "end",
@@ -80,12 +75,12 @@ class _AudioCallState extends State<AudioCall> {
 }
 
 class CallOption extends StatelessWidget {
-  IconData icon;
-  String color = "disabled";
-  VoidCallback? pressed;
+  final IconData icon;
+  final String? color;
+  final VoidCallback? pressed;
 
-  CallOption(
-      {super.key, required this.icon, required this.color, this.pressed});
+  const CallOption(
+      {super.key, required this.icon, this.color = "disabled", this.pressed});
 
   @override
   Widget build(BuildContext context) {

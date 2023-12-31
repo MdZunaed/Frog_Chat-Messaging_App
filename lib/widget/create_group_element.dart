@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../style.dart';
+import '../style.dart';
 
-class SearchField extends StatelessWidget {
-  const SearchField({super.key, required this.text});
+class GroupSearchField extends StatelessWidget {
+  const GroupSearchField({super.key, required this.text});
+
   final String text;
 
   @override
@@ -20,11 +21,8 @@ class SearchField extends StatelessWidget {
               icon: const Icon(Icons.search, color: kSecondayColor),
               onPressed: () {}),
           border: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: kSecondayColor,
-            ),
-            borderRadius: BorderRadius.circular(15).r,
-          ),
+              borderSide: const BorderSide(color: kSecondayColor),
+              borderRadius: BorderRadius.circular(15).r),
           hintText: text,
           hintStyle: const TextStyle(color: kSecondayColor),
           enabledBorder: OutlineInputBorder(

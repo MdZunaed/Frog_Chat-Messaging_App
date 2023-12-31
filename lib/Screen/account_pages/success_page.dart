@@ -1,23 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:frog_chat/account_pages/input_fields/button.dart';
+import 'package:frog_chat/Screen/home_page/home_page.dart';
 import 'package:frog_chat/models/UserModel.dart';
 import 'package:frog_chat/style.dart';
-import '../Screen/home_page/home_page.dart';
+import 'package:frog_chat/widget/button.dart';
 
-class SuccessPage extends StatefulWidget {
+class SuccessPage extends StatelessWidget {
   final UserModel userModel;
   final User firebaseUser;
 
   const SuccessPage(
       {super.key, required this.userModel, required this.firebaseUser});
 
-  @override
-  State<SuccessPage> createState() => _SuccessPageState();
-}
-
-class _SuccessPageState extends State<SuccessPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,16 +34,15 @@ class _SuccessPageState extends State<SuccessPage> {
                   ]),
             ),
             SizedBox(height: 150.h),
-            InkWell(
-              child: const Button(text: "Go to Home Page"),
+            Button(
+              text: "Go to Home Page",
               onTap: () {
                 Navigator.popUntil(context, (route) => route.isFirst);
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                         builder: (context) => HomePage(
-                            userModel: widget.userModel,
-                            firebaseUser: widget.firebaseUser)));
+                            userModel: userModel, firebaseUser: firebaseUser)));
               },
             )
           ]),

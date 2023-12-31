@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:frog_chat/Screen/chat_inbox/chat_inbox.dart';
+import 'package:frog_chat/Screen/chat_inbox/chat_inbox_page.dart';
 import 'package:frog_chat/main.dart';
 import 'package:frog_chat/models/InboxModel.dart';
 import 'package:frog_chat/models/UserModel.dart';
@@ -121,8 +121,8 @@ class _SearchPageState extends State<SearchPage> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ChatInbox(
-                                      targetuser: searchedUser,
+                                  builder: (context) => ChatInboxPage(
+                                      targetUser: searchedUser,
                                       inbox: inboxModel!,
                                       userModel: widget.userModel,
                                       firebaseUser: widget.firebaseUser)));

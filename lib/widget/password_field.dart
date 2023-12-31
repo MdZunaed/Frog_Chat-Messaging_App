@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../style.dart';
+import '../style.dart';
 
 class PasswordField extends StatefulWidget {
   const PasswordField(

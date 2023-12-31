@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:frog_chat/Screen/home_page/home_page.dart';
 import 'package:frog_chat/models/UserModel.dart';
 import 'package:frog_chat/models/firebase_helper.dart';
-import 'package:frog_chat/splash_screen.dart';
+import 'package:frog_chat/Screen/splash_screen.dart';
 import 'package:frog_chat/style.dart';
 import 'package:uuid/uuid.dart';
 
@@ -43,7 +43,9 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
             theme: ThemeData(
+              useMaterial3: true,
               scaffoldBackgroundColor: kBgColor,
+              appBarTheme: AppBarTheme(titleTextStyle: kTitleStyle,iconTheme:const IconThemeData(color: kWhiteColor)),
               colorScheme: ColorScheme.fromSwatch().copyWith(
                   primary: kPrimaryColor,
                   secondary: kSecondayColor,
@@ -72,6 +74,7 @@ class NewApp extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
           theme: ThemeData(
+            useMaterial3: true,
             scaffoldBackgroundColor: kBgColor,
             colorScheme: ColorScheme.fromSwatch().copyWith(
                 primary: kPrimaryColor,
