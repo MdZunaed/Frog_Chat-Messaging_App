@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               useMaterial3: true,
               scaffoldBackgroundColor: kBgColor,
-              appBarTheme: AppBarTheme(titleTextStyle: kTitleStyle,iconTheme:const IconThemeData(color: kWhiteColor)),
+              appBarTheme: AppBarTheme(elevation: 0,backgroundColor: kBgColor,titleTextStyle: kTitleStyle,iconTheme:const IconThemeData(color: kWhiteColor)),
               colorScheme: ColorScheme.fromSwatch().copyWith(
                   primary: kPrimaryColor,
                   secondary: kSecondayColor,

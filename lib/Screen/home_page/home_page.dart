@@ -5,7 +5,6 @@ import 'package:frog_chat/style.dart';
 import '../../models/UserModel.dart';
 import '../search_page/search_page.dart';
 import 'chat_list_page.dart';
-import 'group_list_page.dart';
 import '../../widget/homepage_element.dart';
 
 class HomePage extends StatefulWidget {
@@ -48,66 +47,60 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               imageName: widget.userModel.pic.toString())
         ],
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-        child: Column(
-          children: [
-            // Container(
-            //   margin: EdgeInsets.symmetric(vertical: 10.h),
-            //   height: 80.h,
-            //   child: ListView(
-            //     physics: const BouncingScrollPhysics(),
-            //     scrollDirection: Axis.horizontal,
-            //     children: [
-            //       ActiveNow(name: "Abu Sayed", imgName: "sayed.png"),
-            //       ActiveNow(name: "Md Zunaed", imgName: "zunu.jpg"),
-            //       ActiveNow(name: "Md Mizan", imgName: "mizan.jpg"),
-            //       ActiveNow(name: "Alif Sarkar", imgName: "alif.jpg"),
-            //       ActiveNow(name: "Mahmudul", imgName: "buira.jpg"),
-            //       ActiveNow(name: "Md Zunaed", imgName: "zunu.jpg"),
-            //       ActiveNow(name: "Md Mizan", imgName: "mizan.jpg"),
-            //       ActiveNow(name: "Mahmudul", imgName: "buira.jpg"),
-            //     ],
-            //   ),
-            // ),
-            TabBar(dividerColor: Colors.transparent,
-                controller: tabController,
-                isScrollable: true,
-                unselectedLabelColor: Colors.white70,
-                labelColor: kDarkColor,
-                labelStyle: TextStyle(
-                    fontSize: 18.sp,
-                    color: kDarkColor,
-                    fontWeight: FontWeight.w600),
-                indicator: BoxDecoration(
-                    color: kPrimaryColor,
-                    borderRadius: BorderRadius.circular(11).r),
-                tabs: [
-                  SizedBox(
-                      height: 40.h,
-                      width: 140.w,
-                      child: const Tab(text: "Chat's")),
-                  SizedBox(
-                      height: 40.h,
-                      width: 140.w,
-                      child: const Tab(text: "Group's")),
-                ]),
-            SizedBox(height: 10.h),
-            Expanded(
-              child: TabBarView(
-                controller: tabController,
-                physics: const BouncingScrollPhysics(),
-                children: [
-                  ChatListPage(
-                      userModel: widget.userModel,
-                      firebaseUser: widget.firebaseUser),
-                  const GroupListPage(),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+      body: ChatListPage(userModel: widget.userModel, firebaseUser: widget.firebaseUser),
+      // body: Padding(
+      //   padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+      //   child: Column(
+      //     children: [
+      //       Container(
+      //         margin: EdgeInsets.symmetric(vertical: 10.h),
+      //         height: 80.h,
+      //         child: ListView(
+      //           physics: const BouncingScrollPhysics(),
+      //           scrollDirection: Axis.horizontal,
+      //           children: [
+      //             ActiveNow(name: "Abu Sayed", imgName: "sayed.png"),
+      //           ],
+      //         ),
+      //       ),
+      //       TabBar(dividerColor: Colors.transparent,
+      //           controller: tabController,
+      //           isScrollable: true,
+      //           unselectedLabelColor: Colors.white70,
+      //           labelColor: kDarkColor,
+      //           labelStyle: TextStyle(
+      //               fontSize: 18.sp,
+      //               color: kDarkColor,
+      //               fontWeight: FontWeight.w600),
+      //           indicator: BoxDecoration(
+      //               color: kPrimaryColor,
+      //               borderRadius: BorderRadius.circular(11).r),
+      //           tabs: [
+      //             SizedBox(
+      //                 height: 40.h,
+      //                 width: 140.w,
+      //                 child: const Tab(text: "Chat's")),
+      //             SizedBox(
+      //                 height: 40.h,
+      //                 width: 140.w,
+      //                 child: const Tab(text: "Group's")),
+      //           ]),
+      //       SizedBox(height: 10.h),
+      //       Expanded(
+      //         child: TabBarView(
+      //           controller: tabController,
+      //           physics: const BouncingScrollPhysics(),
+      //           children: [
+      //             ChatListPage(
+      //                 userModel: widget.userModel,
+      //                 firebaseUser: widget.firebaseUser),
+      //             const GroupListPage(),
+      //           ],
+      //         ),
+      //       ),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }

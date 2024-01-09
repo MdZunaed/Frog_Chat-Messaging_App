@@ -29,16 +29,12 @@ class ChatInboxPage extends StatefulWidget {
 class _ChatInboxPageState extends State<ChatInboxPage> {
   TextEditingController msgController = TextEditingController();
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          backgroundColor: kBgColor,
-          title: InboxAppbar(targetUser: widget.targetUser)),
-      body: SafeArea(
-          child: Padding(
+      resizeToAvoidBottomInset: true,
+      appBar: AppBar(title: InboxAppbar(userModel: widget.userModel, targetUser: widget.targetUser)),
+      body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8).r,
         child: Column(children: [
           Expanded(
@@ -57,35 +53,31 @@ class _ChatInboxPageState extends State<ChatInboxPage> {
                     reverse: true,
                     itemCount: dataSnapshot.docs.length,
                     itemBuilder: (context, index) {
-                      MessageModel currentMessage = MessageModel.fromMap(
-                          dataSnapshot.docs[index].data()
-                              as Map<String, dynamic>);
+                      MessageModel currentMessage =
+                          MessageModel.fromMap(dataSnapshot.docs[index].data() as Map<String, dynamic>);
                       return Row(
-                        mainAxisAlignment:
-                            (currentMessage.sender == widget.targetUser.uid)
-                                ? MainAxisAlignment.start
-                                : MainAxisAlignment.end,
+                        mainAxisAlignment: (currentMessage.sender == widget.targetUser.uid)
+                            ? MainAxisAlignment.start
+                            : MainAxisAlignment.end,
                         children: [
                           Container(
-                              constraints: BoxConstraints(
-                                  maxWidth:
-                                      MediaQuery.of(context).size.width / 1.7),
+                              constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width / 1.7),
                               margin: const EdgeInsets.all(5),
                               padding: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  color: (currentMessage.sender ==
-                                          widget.targetUser.uid)
+                                  color: (currentMessage.sender == widget.targetUser.uid)
+                                      //? Colors.grey.shade400
                                       ? kDarkColor
                                       : kPrimaryColor),
                               child: Text(
                                 currentMessage.text.toString(),
                                 style: TextStyle(
                                     fontSize: 16.sp,
-                                    color: (currentMessage.sender ==
-                                            widget.targetUser.uid)
+                                    color: (currentMessage.sender == widget.targetUser.uid)
                                         ? kWhiteColor
                                         : kDarkColor,
+                                    //color: kDarkColor,
                                     fontWeight: FontWeight.w400),
                               )),
                         ],
@@ -109,18 +101,19 @@ class _ChatInboxPageState extends State<ChatInboxPage> {
               return Container();
             },
           )),
-          InboxNavbar(
-            controller: msgController,
-            onTap: () => sendMsg(),
-          ),
+          InboxNavbar(controller: msgController, onTap: () => sendMsg()),
         ]),
-      )),
+      ),
+      // bottomNavigationBar:  InboxNavbar(
+      //   controller: msgController,
+      //   onTap: () => sendMsg()),
     );
   }
+
   void sendMsg() async {
     String msg = msgController.text.trim();
     msgController.clear();
-    if (msg != null) {
+    if (msg != null && msg != "") {
       MessageModel newMessage = MessageModel(
         messageId: uuid.v1(),
         sender: widget.userModel.uid,
@@ -135,10 +128,7 @@ class _ChatInboxPageState extends State<ChatInboxPage> {
           .doc(newMessage.messageId)
           .set(newMessage.toMap());
       widget.inbox.lastMessage = msg;
-      FirebaseFirestore.instance
-          .collection("inboxes")
-          .doc(widget.inbox.inboxId)
-          .set(widget.inbox.toMap());
+      FirebaseFirestore.instance.collection("inboxes").doc(widget.inbox.inboxId).set(widget.inbox.toMap());
     }
   }
 }

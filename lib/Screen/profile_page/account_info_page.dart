@@ -13,50 +13,20 @@ class AccountInfoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          backgroundColor: kBgColor, title: const Text("Account Information")),
-      backgroundColor: kBgColor,
+      appBar: AppBar(title: const Text("Account Information")),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 25),
         child: Column(children: [
-          Center(
-            child: Stack(children: [
-              CircleAvatar(
-                  radius: 55.r,
-                  backgroundImage: NetworkImage(userModel.pic.toString())),
-              Positioned(
-                  right: 0,
-                  bottom: 0,
-                  child: Container(
-                      height: 45.h,
-                      width: 45.w,
-                      decoration: const BoxDecoration(
-                          color: kPrimaryColor, shape: BoxShape.circle),
-                      child: PopupMenuButton(
-                          icon: const Icon(Icons.edit_document,
-                              color: kDarkColor),
-                          color: kPrimaryColor,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          itemBuilder: (context) => [
-                                PopupMenuItem(
-                                    child: Text("Take Picture",
-                                        style: kTitleStyle.copyWith(
-                                            color: kDarkColor))),
-                                PopupMenuItem(
-                                    child: Text("From Gallery",
-                                        style: kTitleStyle.copyWith(
-                                            color: kDarkColor))),
-                              ]))),
-            ]),
-          ),
+          CircleAvatar(
+              radius: 55.r,
+              backgroundImage: NetworkImage(userModel.pic.toString())),
           gap,
           gap,
           InfoItem(
               fieldName: "Your name", fieldInfo: userModel.name.toString()),
           InfoItem(
               fieldName: "Your email", fieldInfo: userModel.email.toString()),
-          const InfoItem(fieldName: "Your Number", fieldInfo: ""),
+          //const InfoItem(fieldName: "Your Number", fieldInfo: ""),
           const Spacer(),
           Button(
             text: "Edit Information",

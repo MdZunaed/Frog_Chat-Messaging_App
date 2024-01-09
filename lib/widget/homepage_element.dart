@@ -14,6 +14,7 @@ class BarIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      borderRadius: BorderRadius.circular(30),
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.all(7).w,
@@ -34,13 +35,14 @@ class BarIcon extends StatelessWidget {
 
 class BarImage extends StatelessWidget {
   final UserModel userModel;
-  final imageName;
+  final String imageName;
 
   const BarImage({super.key, required this.userModel, required this.imageName});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      borderRadius: BorderRadius.circular(30),
       onTap: () {
         Navigator.push(
             context,
@@ -64,7 +66,7 @@ class BarImage extends StatelessWidget {
 
 class ActiveNow extends StatelessWidget {
   const ActiveNow({super.key, required this.imgName, required this.name});
-  final imgName;
+  final String imgName;
   final String name;
 
   @override
@@ -80,7 +82,7 @@ class ActiveNow extends StatelessWidget {
               color: kDarkColor,
               //border: Border.all(color: kPrimaryColor, width: 1.w),
               image: DecorationImage(
-                  image: AssetImage("images/" + imgName), fit: BoxFit.cover)),
+                  image: AssetImage("images/$imgName"), fit: BoxFit.cover)),
         ),
         SizedBox(height: 5.h),
         Text(name, textAlign: TextAlign.center, style: kTextStyle),

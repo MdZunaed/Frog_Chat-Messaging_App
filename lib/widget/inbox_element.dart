@@ -9,9 +9,10 @@ import 'package:frog_chat/widget/show_toast.dart';
 import '../models/UserModel.dart';
 
 class InboxAppbar extends StatelessWidget {
+  final UserModel userModel;
   final UserModel targetUser;
 
-  const InboxAppbar({super.key, required this.targetUser});
+  const InboxAppbar({super.key, required this.targetUser, required this.userModel});
 
   @override
   Widget build(BuildContext context) {
@@ -40,18 +41,18 @@ class InboxAppbar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             gaph,
-            InkWell(
+            InkWell(borderRadius: BorderRadius.circular(20),
               child: const Icon(Icons.call, color: kPrimaryColor),
               onTap: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            AudioCallPage(targetUser: targetUser)));
+                            AudioCallPage(userModel: userModel,targetUser: targetUser)));
               },
             ),
             SizedBox(width: 15.w),
-            InkWell(
+            InkWell(borderRadius: BorderRadius.circular(20),
               child: const Icon(CupertinoIcons.video_camera_solid,
                   size: 30, color: kPrimaryColor),
               onTap: () {
@@ -59,11 +60,12 @@ class InboxAppbar extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            VideoCallPage(targetUser: targetUser)));
+                            VideoCallPage(userModel: userModel,targetUser: targetUser)));
               },
             ),
             SizedBox(width: 15.w),
             InkWell(
+              borderRadius: BorderRadius.circular(20),
                 child: const Icon(Icons.info_rounded, color: kPrimaryColor),
                 onTap: () {
                   Navigator.push(
@@ -144,10 +146,11 @@ class _InboxNavbarState extends State<InboxNavbar> {
             child: TextField(
               keyboardType: TextInputType.multiline,
               minLines: 1,
-              maxLines: 4,
+              maxLines: 3,
               controller: widget.controller,
               textAlignVertical: TextAlignVertical.center,
               style: kTitleStyle,
+              //textInputAction: TextInputAction.done,
               decoration: InputDecoration(
                 isDense: true,
                 //suffixIcon: Icon(Icons.face_5_rounded, color: kPrimaryColor, size: 23.h),

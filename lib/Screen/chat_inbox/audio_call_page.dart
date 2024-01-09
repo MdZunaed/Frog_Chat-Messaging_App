@@ -6,9 +6,10 @@ import 'package:frog_chat/models/UserModel.dart';
 import 'package:frog_chat/style.dart';
 
 class AudioCallPage extends StatelessWidget {
+  final UserModel userModel;
   final UserModel targetUser;
 
-  const AudioCallPage({super.key, required this.targetUser});
+  const AudioCallPage({super.key, required this.targetUser, required this.userModel});
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +55,7 @@ class AudioCallPage extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: ((context) =>
-                              VideoCallPage(targetUser: targetUser))));
+                              VideoCallPage(userModel: userModel,targetUser: targetUser))));
                 },
               ),
               const CallOption(icon: CupertinoIcons.speaker_2, color: "disabled"),

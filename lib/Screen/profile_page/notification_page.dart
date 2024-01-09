@@ -10,24 +10,24 @@ class NotificationPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
           backgroundColor: kBgColor, title: const Text("Notification & Sound")),
-      backgroundColor: kBgColor,
+      //backgroundColor: kBgColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 25).r,
         child: Column(
           children: [
-            const ItemName(text: "Notification"),
+            const NotificationItemName(text: "Notification"),
             gap,
             Row(children: [
               Text("Message", style: kTextStyle.copyWith(color: kPrimaryColor))
             ]),
-            const ItemName(text: "Chat"),
-            const ItemName(text: "Group's"),
+            const NotificationItemName(text: "Chat"),
+            const NotificationItemName(text: "Group's"),
             gap,
             Row(children: [
               Text("Call's", style: kTextStyle.copyWith(color: kPrimaryColor))
             ]),
-            const ItemName(text: "Ringtone"),
-            const ItemName(text: "Vibrate"),
+            const NotificationItemName(text: "Ringtone"),
+            const NotificationItemName(text: "Vibrate"),
           ],
         ),
       ),
@@ -35,17 +35,17 @@ class NotificationPage extends StatelessWidget {
   }
 }
 
-class ItemName extends StatefulWidget {
-  const ItemName({super.key, required this.text, this.val});
+class NotificationItemName extends StatefulWidget {
+  const NotificationItemName({super.key, required this.text, this.val});
   final String text;
   final bool? val;
 
   @override
-  State<ItemName> createState() => _ItemNameState();
+  State<NotificationItemName> createState() => _NotificationItemNameState();
 }
 
-class _ItemNameState extends State<ItemName> {
-  late bool val = true;
+class _NotificationItemNameState extends State<NotificationItemName> {
+  bool val = true;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -65,33 +65,6 @@ class _ItemNameState extends State<ItemName> {
           inactiveTrackColor: kDarkColor,
         )
       ],
-    );
-  }
-}
-
-class OnOff extends StatefulWidget {
-  const OnOff({super.key, this.val});
-  final bool? val;
-
-  @override
-  State<OnOff> createState() => _OnOffState();
-}
-
-class _OnOffState extends State<OnOff> {
-  late bool val = true;
-  @override
-  Widget build(BuildContext context) {
-    return Switch(
-      value: val,
-      onChanged: (value) {
-        setState(() {
-          val = value;
-        });
-      },
-      activeColor: kPrimaryColor,
-      activeTrackColor: kDarkColor,
-      inactiveThumbColor: kSecondayColor,
-      inactiveTrackColor: kDarkColor,
     );
   }
 }

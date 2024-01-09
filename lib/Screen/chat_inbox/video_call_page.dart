@@ -7,9 +7,10 @@ import 'package:frog_chat/style.dart';
 import 'audio_call_page.dart';
 
 class VideoCallPage extends StatelessWidget {
+  final UserModel userModel;
   final UserModel targetUser;
 
-  const VideoCallPage({super.key, required this.targetUser});
+  const VideoCallPage({super.key, required this.targetUser, required this.userModel});
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +42,8 @@ class VideoCallPage extends StatelessWidget {
               child: SizedBox(
                   height: 150.h,
                   width: 110.w,
-                  child: const Image(
-                      image: AssetImage("images/zunu.jpg"), fit: BoxFit.cover)))
+                  child: Image(
+                      image: NetworkImage(userModel.pic.toString()), fit: BoxFit.cover)))
         ],
       )),
       bottomNavigationBar: Container(
@@ -67,7 +68,7 @@ class VideoCallPage extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: ((context) =>
-                              AudioCallPage(targetUser: targetUser))));
+                              AudioCallPage(userModel: userModel,targetUser: targetUser))));
                 },
               ),
               const CallOption(icon: CupertinoIcons.speaker_2, color: "disabled"),

@@ -43,7 +43,7 @@ class CallHistoryPage extends StatelessWidget {
 }
 
 class GetHistory extends StatelessWidget {
-  final imageName;
+  final String imageName;
   final String title;
   final String time;
   final String icon;

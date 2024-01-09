@@ -12,8 +12,7 @@ class SearchPage extends StatefulWidget {
   final UserModel userModel;
   final User firebaseUser;
 
-  const SearchPage(
-      {super.key, required this.userModel, required this.firebaseUser});
+  const SearchPage({super.key, required this.userModel, required this.firebaseUser});
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -27,28 +26,21 @@ class _SearchPageState extends State<SearchPage> {
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection("inboxes")
         .where("persons.${widget.userModel.uid}", isEqualTo: true)
-        .where("persons.${targetUser.uid}", isEqualTo: true)
+        .where("persons.${targetUser.uid}",arrayContains: true,isEqualTo: true)
         .get();
 
-    if (snapshot.docs.length > 0) {
+    if (snapshot.docs.isNotEmpty) {
       var inboxData = snapshot.docs[0].data();
-      InboxModel currentInbox =
-          InboxModel.fromMap(inboxData as Map<String, dynamic>);
+      InboxModel currentInbox = InboxModel.fromMap(inboxData as Map<String, dynamic>);
       inbox = currentInbox;
     } else {
       InboxModel newInbox = InboxModel(
           inboxId: uuid.v1(),
           lastMessage: "",
-          persons: {
-            widget.userModel.uid.toString(): true,
-            targetUser.uid.toString(): true
-          },
+          persons: {widget.userModel.uid.toString(): true, targetUser.uid.toString(): true},
           users: [widget.userModel.uid.toString(), targetUser.uid.toString()],
           chatTime: DateTime.now());
-      await FirebaseFirestore.instance
-          .collection("inboxes")
-          .doc(newInbox.inboxId)
-          .set(newInbox.toMap());
+      await FirebaseFirestore.instance.collection("inboxes").doc(newInbox.inboxId).set(newInbox.toMap());
       inbox = newInbox;
     }
     return inbox;
@@ -57,9 +49,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kBgColor,
       appBar: AppBar(
-        backgroundColor: kBgColor,
         title: TextField(
           controller: searchController,
           decoration: InputDecoration(
@@ -105,49 +95,45 @@ class _SearchPageState extends State<SearchPage> {
                 if (snapshot.hasData) {
                   QuerySnapshot dataSnapshot = snapshot.data as QuerySnapshot;
 
-                  if (dataSnapshot.docs.length > 0) {
-                    Map<String, dynamic> userMap =
-                        dataSnapshot.docs[0].data() as Map<String, dynamic>;
+                  if (dataSnapshot.docs.isNotEmpty) {
+                    Map<String, dynamic> userMap = dataSnapshot.docs[0].data() as Map<String, dynamic>;
 
                     UserModel searchedUser = UserModel.fromMap(userMap);
 
                     return ListTile(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.r)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.r)),
                       onTap: () async {
-                        InboxModel? inboxModel =
-                            await getInboxModel(searchedUser);
+                        InboxModel? inboxModel = await getInboxModel(searchedUser);
                         if (InboxModel != null) {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ChatInboxPage(
-                                      targetUser: searchedUser,
-                                      inbox: inboxModel!,
-                                      userModel: widget.userModel,
-                                      firebaseUser: widget.firebaseUser)));
+                          if (mounted) {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ChatInboxPage(
+                                        targetUser: searchedUser,
+                                        inbox: inboxModel!,
+                                        userModel: widget.userModel,
+                                        firebaseUser: widget.firebaseUser)));
+                          }
                         }
                       },
                       leading: CircleAvatar(
                           backgroundColor: kSecondayColor,
                           radius: 23.r,
-                          backgroundImage:
-                              NetworkImage(searchedUser.pic.toString())),
-                      title: Text(searchedUser.name!,
-                          style: kTitleStyle.copyWith(fontSize: 18.sp)),
+                          backgroundImage: NetworkImage(searchedUser.pic.toString())),
+                      title: Text(searchedUser.name!, style: kTitleStyle.copyWith(fontSize: 18.sp)),
                       subtitle: Text(
                         searchedUser.email!,
                         style: kTextStyle,
                       ),
                     );
                   } else {
-                    return const Center(
-                        child: Text("Searh people with Username"));
+                    return const Center(child: Text("Search people with Username"));
                   }
                 } else if (snapshot.hasError) {
-                  return const Center(child: Text("An error Occurd!"));
+                  return const Center(child: Text("An error Occur!"));
                 } else {
-                  return const Center(child: Text("No resuls found!"));
+                  return const Center(child: Text("No results found!"));
                 }
               } else {
                 return const Center(child: CircularProgressIndicator());
@@ -160,11 +146,6 @@ class _SearchPageState extends State<SearchPage> {
           //         crossAxisCount: 4),
           //     children: [
           //       ActiveNow(imgName: "sayed.png", name: "Abu Sayed"),
-          //       ActiveNow(imgName: "zunu.jpg", name: "Md Zunaed"),
-          //       ActiveNow(imgName: "mizan.jpg", name: "Mizan Hossen"),
-          //       ActiveNow(imgName: "buira.jpg", name: "Mahmudul"),
-          //       ActiveNow(imgName: "alamin.jpg", name: "Alamin hossen"),
-          //       ActiveNow(imgName: "alif.jpg", name: "Alif Sarkar"),
           //     ],
           //   ),
           // ),
