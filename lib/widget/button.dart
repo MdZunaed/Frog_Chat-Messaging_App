@@ -11,6 +11,7 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      borderRadius: BorderRadius.circular(30.r),
       onTap: onTap,
       child: Container(
         height: 50.h,

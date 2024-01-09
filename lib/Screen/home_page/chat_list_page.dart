@@ -41,6 +41,7 @@ class ChatListPage extends StatelessWidget {
             if (snapshot.hasData) {
               QuerySnapshot inboxSnapShot = snapshot.data as QuerySnapshot;
               return ListView.builder(
+
                 physics: const BouncingScrollPhysics(),
                 itemCount: inboxSnapShot.docs.length,
                 itemBuilder: (context, index) {

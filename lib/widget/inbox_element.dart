@@ -83,9 +83,9 @@ class InboxAppbar extends StatelessWidget {
 
 class InboxNavbar extends StatefulWidget {
   final TextEditingController controller;
-  final VoidCallback onTap;
+  final VoidCallback onTapSend;
 
-  const InboxNavbar({super.key, required this.controller, required this.onTap});
+  const InboxNavbar({super.key, required this.controller, required this.onTapSend});
 
   @override
   State<InboxNavbar> createState() => _InboxNavbarState();
@@ -96,48 +96,15 @@ class _InboxNavbarState extends State<InboxNavbar> {
   Widget build(BuildContext context) {
     return Container(
       //height: 70.h,
-      padding: EdgeInsets.all(8.h),
+      padding: EdgeInsets.symmetric(vertical: 5.h),
       child: Row(children: [
         //Icon(Icons.location_on_rounded, color: kPrimaryColor, size: 30.r),
         IconButton(
-            splashRadius: 25,
+            //splashRadius: 25,
             icon: Icon(Icons.attach_file_rounded,
                 color: kPrimaryColor, size: 30.r),
             onPressed: () {
-              showModalBottomSheet(
-                backgroundColor: Colors.transparent,
-                context: context,
-                builder: (context) => Container(
-                  height: 240.h,
-                  decoration: const BoxDecoration(
-                      color: kBgColor,
-                      borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(30))),
-                  child: Padding(
-                    padding: const EdgeInsets.all(15).h,
-                    child: Column(
-                      children: [
-                        Text("Share Content", style: kTitleStyle),
-                        const SizedBox(height: 15),
-                        SheetItem(
-                            icon: Icons.camera_alt,
-                            text: "Camera",
-                            onTap: () {}),
-                        const SizedBox(height: 15),
-                        SheetItem(
-                            icon: Icons.image,
-                            text: "From Gallery",
-                            onTap: () {}),
-                        const SizedBox(height: 15),
-                        SheetItem(
-                            icon: Icons.file_copy,
-                            text: "Send Documents",
-                            onTap: () {}),
-                      ],
-                    ),
-                  ),
-                ),
-              );
+              sendAttachmentSheet(context);
             }),
         Expanded(
           child: Container(
@@ -167,11 +134,48 @@ class _InboxNavbarState extends State<InboxNavbar> {
         ),
 
         IconButton(
-            splashRadius: 28,
+            //splashRadius: 28,
             icon: Icon(Icons.send, color: kPrimaryColor, size: 28.r),
-            onPressed: widget.onTap),
+            onPressed: widget.onTapSend),
       ]),
     );
+  }
+
+  Future<dynamic> sendAttachmentSheet(BuildContext context) {
+    return showModalBottomSheet(
+              backgroundColor: Colors.transparent,
+              context: context,
+              builder: (context) => Container(
+                height: 240.h,
+                decoration: const BoxDecoration(
+                    color: kBgColor,
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(30))),
+                child: Padding(
+                  padding: const EdgeInsets.all(15).h,
+                  child: Column(
+                    children: [
+                      Text("Share Content", style: kTitleStyle),
+                      const SizedBox(height: 15),
+                      SheetItem(
+                          icon: Icons.camera_alt,
+                          text: "Camera",
+                          onTap: () {}),
+                      const SizedBox(height: 15),
+                      SheetItem(
+                          icon: Icons.image,
+                          text: "From Gallery",
+                          onTap: () {}),
+                      const SizedBox(height: 15),
+                      SheetItem(
+                          icon: Icons.file_copy,
+                          text: "Send Documents",
+                          onTap: () {}),
+                    ],
+                  ),
+                ),
+              ),
+            );
   }
 }
 

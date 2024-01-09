@@ -38,100 +38,40 @@ class _SignupPageState extends State<SignupPage> {
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                //crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                    Text("Sign up - Frog Chat", style: kHeadingStyle)
-                  ]),
-                  gap,
-                  Stack(children: [
-                    CircleAvatar(
-                      radius: 55.r,
-                      backgroundColor: kDarkColor,
-                      backgroundImage:
-                          (imageFile != null) ? FileImage(imageFile!) : null,
-                      child: (imageFile == null)
-                          ? const Icon(Icons.image,
-                              size: 50, color: kSecondayColor)
-                          : null,
-                    ),
-                    Positioned(
-                        right: 0,
-                        bottom: 0,
-                        child: Container(
-                            height: 45.h,
-                            width: 45.w,
-                            decoration: const BoxDecoration(
-                                color: kPrimaryColor, shape: BoxShape.circle),
-                            child: PopupMenuButton(
-                                icon: const Icon(Icons.edit_document,
-                                    color: kDarkColor),
-                                color: kPrimaryColor,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                itemBuilder: (context) => [
-                                      PopupMenuItem(
-                                          onTap: () {
-                                            selectImage(ImageSource.camera);
-                                          },
-                                          child: Text("Take Picture",
-                                              style: kTitleStyle.copyWith(
-                                                  color: kDarkColor))),
-                                      PopupMenuItem(
-                                          onTap: () {
-                                            selectImage(ImageSource.gallery);
-                                          },
-                                          child: Text("From Gallery",
-                                              style: kTitleStyle.copyWith(
-                                                  color: kDarkColor))),
-                                    ]))),
-                  ]),
-                  gap,
-                  Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                    Text("Step-1",
-                        style: kTitleStyle, textAlign: TextAlign.start)
-                  ]),
-                  gap,
-                  InputField(
-                      controller: nameController, text: "Enter your full name"),
-                  gap,
-                  Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                    Text("Step-2",
-                        style: kTitleStyle, textAlign: TextAlign.start)
-                  ]),
-                  gap,
-                  InputField(
-                      controller: emailController, text: "Your Email Address"),
-                  gap,
-                  Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                    Text("Step-3",
-                        style: kTitleStyle, textAlign: TextAlign.start)
-                  ]),
-                  gap,
-                  PasswordField(
-                      controller: passController,
-                      hintText: "Enter your Password"),
-                  gap,
-                  PasswordField(
-                      controller: cPassController,
-                      hintText: "Confirm Password"),
-                  gap,
-                  gap,
-                  gap,
-                  loading
-                      ? const CircularProgressIndicator()
-                      : Button(
-                          text: "Sign Up",
-                          onTap: () {
-                            createAccount();
-                          },
-                        ),
-                ]),
-          ),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Sign up - Frog Chat", style: kHeadingStyle),
+                gap,
+                selectImageField(),
+                gap,
+                Text("Step-1", style: kTitleStyle, textAlign: TextAlign.start),
+                gap,
+                InputField(controller: nameController, text: "Enter your full name"),
+                gap,
+                Text("Step-2", style: kTitleStyle, textAlign: TextAlign.start),
+                gap,
+                InputField(controller: emailController, text: "Your Email Address"),
+                gap,
+                Text("Step-3", style: kTitleStyle, textAlign: TextAlign.start),
+                gap,
+                PasswordField(controller: passController, hintText: "Enter your Password"),
+                gap,
+                PasswordField(controller: cPassController, hintText: "Confirm Password"),
+                gap,
+                gap,
+                gap,
+                loading
+                    ? const Center(child: CircularProgressIndicator())
+                    : Button(
+                        text: "Sign Up",
+                        onTap: () {
+                          createAccount();
+                        },
+                      ),
+              ]),
         ),
       ),
     );
@@ -166,7 +106,7 @@ class _SignupPageState extends State<SignupPage> {
     String email = emailController.text.trim();
     String pass = passController.text.trim();
     String cPass = cPassController.text.trim();
-    UserModel userModel = UserModel();
+    //UserModel userModel = UserModel();
     UserCredential? userCredential;
     UploadTask uploadTask;
 
@@ -182,22 +122,8 @@ class _SignupPageState extends State<SignupPage> {
       });
     } else {
       try {
-        userCredential = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(email: email, password: pass);
-        toast().toastmessage("User created");
-        setState(() {
-          loading = false;
-        });
-        if (mounted) {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => SuccessPage(
-                        userModel: userModel,
-                        firebaseUser: userCredential!.user!,
-                      )));
-        }
-
+        userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: pass);
         if (userCredential != null) {
           String uid = userCredential.user!.uid;
 
@@ -207,8 +133,9 @@ class _SignupPageState extends State<SignupPage> {
               .putFile(File(imageFile!.path));
 
           TaskSnapshot snapshot = await uploadTask;
-          String imageUrl = await snapshot.ref.getDownloadURL();
-          picUrl = imageUrl;
+          picUrl = await snapshot.ref.getDownloadURL();
+          // String imageUrl = await snapshot.ref.getDownloadURL();
+          // picUrl = imageUrl;
 
           UserModel newUser = UserModel(
             uid: uid,
@@ -216,12 +143,21 @@ class _SignupPageState extends State<SignupPage> {
             email: email,
             pic: picUrl,
           );
-          userModel = newUser;
+          //userModel = newUser;
 
-          await FirebaseFirestore.instance
-              .collection("users")
-              .doc(newUser.uid)
-              .set(newUser.toMap());
+          await FirebaseFirestore.instance.collection("users").doc(newUser.uid).set(newUser.toMap());
+          if (mounted) {
+            //toast().toastmessage("User created");
+            setState(() {
+              loading = false;
+            });
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        // const SplashScreen()
+                        SuccessPage(userModel: newUser, firebaseUser: userCredential!.user!)));
+          }
         }
       } on FirebaseAuthException catch (error) {
         toast().toastmessage(error.message!);
@@ -230,5 +166,44 @@ class _SignupPageState extends State<SignupPage> {
         });
       }
     }
+  }
+
+  Row selectImageField() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Stack(children: [
+          CircleAvatar(
+            radius: 55.r,
+            backgroundColor: kDarkColor,
+            backgroundImage: (imageFile != null) ? FileImage(imageFile!) : null,
+            child: (imageFile == null) ? const Icon(Icons.image, size: 50, color: kSecondayColor) : null,
+          ),
+          Positioned(
+              right: 0,
+              bottom: 0,
+              child: Container(
+                  height: 45.h,
+                  width: 45.w,
+                  decoration: const BoxDecoration(color: kPrimaryColor, shape: BoxShape.circle),
+                  child: PopupMenuButton(
+                      icon: const Icon(Icons.edit_document, color: kDarkColor),
+                      color: kPrimaryColor,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      itemBuilder: (context) => [
+                            PopupMenuItem(
+                                onTap: () {
+                                  selectImage(ImageSource.camera);
+                                },
+                                child: Text("Take Picture", style: kTitleStyle.copyWith(color: kDarkColor))),
+                            PopupMenuItem(
+                                onTap: () {
+                                  selectImage(ImageSource.gallery);
+                                },
+                                child: Text("From Gallery", style: kTitleStyle.copyWith(color: kDarkColor))),
+                          ]))),
+        ]),
+      ],
+    );
   }
 }

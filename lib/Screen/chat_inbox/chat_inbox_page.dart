@@ -36,73 +36,78 @@ class _ChatInboxPageState extends State<ChatInboxPage> {
       appBar: AppBar(title: InboxAppbar(userModel: widget.userModel, targetUser: widget.targetUser)),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8).r,
-        child: Column(children: [
-          Expanded(
-              child: StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection("inboxes")
-                .doc(widget.inbox.inboxId)
-                .collection("messages")
-                .orderBy("createdOn", descending: true)
-                .snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.active) {
-                if (snapshot.hasData) {
-                  QuerySnapshot dataSnapshot = snapshot.data as QuerySnapshot;
-                  return ListView.builder(
-                    reverse: true,
-                    itemCount: dataSnapshot.docs.length,
-                    itemBuilder: (context, index) {
-                      MessageModel currentMessage =
-                          MessageModel.fromMap(dataSnapshot.docs[index].data() as Map<String, dynamic>);
-                      return Row(
-                        mainAxisAlignment: (currentMessage.sender == widget.targetUser.uid)
-                            ? MainAxisAlignment.start
-                            : MainAxisAlignment.end,
-                        children: [
-                          Container(
-                              constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width / 1.7),
-                              margin: const EdgeInsets.all(5),
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: (currentMessage.sender == widget.targetUser.uid)
-                                      //? Colors.grey.shade400
-                                      ? kDarkColor
-                                      : kPrimaryColor),
-                              child: Text(
-                                currentMessage.text.toString(),
-                                style: TextStyle(
-                                    fontSize: 16.sp,
+        child: Column(
+          children: [
+            Expanded(
+                child: StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection("inboxes")
+                  .doc(widget.inbox.inboxId)
+                  .collection("messages")
+                  .orderBy("createdOn", descending: true)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  const Center(child: CircularProgressIndicator());
+                } else if (snapshot.connectionState == ConnectionState.active) {
+                  if (snapshot.hasData) {
+                    QuerySnapshot dataSnapshot = snapshot.data as QuerySnapshot;
+                    return ListView.builder(
+                      reverse: true,
+                      itemCount: dataSnapshot.docs.length,
+                      itemBuilder: (context, index) {
+                        MessageModel currentMessage =
+                            MessageModel.fromMap(dataSnapshot.docs[index].data() as Map<String, dynamic>);
+                        return Row(
+                          mainAxisAlignment: (currentMessage.sender == widget.targetUser.uid)
+                              ? MainAxisAlignment.start
+                              : MainAxisAlignment.end,
+                          children: [
+                            Container(
+                                constraints:
+                                    BoxConstraints(maxWidth: MediaQuery.of(context).size.width / 1.7),
+                                margin: const EdgeInsets.all(5),
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
                                     color: (currentMessage.sender == widget.targetUser.uid)
-                                        ? kWhiteColor
-                                        : kDarkColor,
-                                    //color: kDarkColor,
-                                    fontWeight: FontWeight.w400),
-                              )),
-                        ],
-                      );
-                    },
-                  );
-                } else if (snapshot.hasError) {
-                  const Center(
-                    child: Text("Error! PLease check your internet."),
-                  );
+                                        //? Colors.grey.shade400
+                                        ? kDarkColor
+                                        : kPrimaryColor),
+                                child: Text(
+                                  currentMessage.text.toString(),
+                                  style: TextStyle(
+                                      fontSize: 16.sp,
+                                      color: (currentMessage.sender == widget.targetUser.uid)
+                                          ? kWhiteColor
+                                          : kDarkColor,
+                                      //color: kDarkColor,
+                                      fontWeight: FontWeight.w400),
+                                )),
+                          ],
+                        );
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    const Center(
+                      child: Text("Error! PLease check your internet."),
+                    );
+                  } else {
+                    Center(
+                      child: Text("Say Hi to ${widget.targetUser.name}"),
+                    );
+                  }
                 } else {
-                  Center(
-                    child: Text("Say Hi to ${widget.targetUser.name}"),
+                  const Center(
+                    child: CircularProgressIndicator(),
                   );
                 }
-              } else {
-                const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              return Container();
-            },
-          )),
-          InboxNavbar(controller: msgController, onTap: () => sendMsg()),
-        ]),
+                return Container();
+              },
+            )),
+            InboxNavbar(controller: msgController, onTapSend: () => sendMsg()),
+          ],
+        ),
       ),
       // bottomNavigationBar:  InboxNavbar(
       //   controller: msgController,

@@ -30,69 +30,55 @@ class _LoginPageState extends State<LoginPage> {
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30).r,
-            child: Column(
-              //mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Image(image: AssetImage("images/frog hand.png")),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text("Login to Frog Chat", style: kHeadingStyle),
-                  ],
-                ),
-                gap,
-                gap,
-                InputField(controller: emailController, text: "Email"),
-                gap,
-                PasswordField(controller: passController, hintText: "Password"),
-                SizedBox(height: 8.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                        child: Text("Forgot Password?", style: kTitleStyle),
-                        onPressed: () {
-                          toast().toastmessage("Not available right now");
-                        }),
-                  ],
-                ),
-                SizedBox(height: 8.h),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30).r,
+          child: Column(
+            //mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              const Image(image: AssetImage("images/frog hand.png")),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text("Login to Frog Chat", style: kHeadingStyle),
+                ],
+              ),
+              gap,
+              gap,
+              InputField(controller: emailController, text: "Email"),
+              gap,
+              PasswordField(controller: passController, hintText: "Password"),
+              SizedBox(height: 8.h),
+              TextButton(
+                  child: Text("Forgot Password?", style: kTitleStyle),
+                  onPressed: () {
+                    toast().toastmessage("Not available right now");
+                  }),
+              SizedBox(height: 8.h),
 
-                //gap,
-                loading
-                    ? const CircularProgressIndicator()
-                    : Button(
-                        text: "Log in",
-                        onTap: () {
-                          logIn();
-                        },
-                      ),
-                gap,
-                Text("Don't you have an Account?", style: kTitleStyle),
-                gap,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    MiniButton(
-                      text: "Sign up",
+              //gap,
+              loading
+                  ? const CircularProgressIndicator()
+                  : Button(
+                      text: "Log in",
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SignupPage()));
+                        logIn();
                       },
                     ),
-                  ],
-                ),
-              ],
-            ),
+              gap,
+              Center(child: Text("Don't you have an Account?", style: kTitleStyle)),
+              gap,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  MiniButton(
+                    text: "Sign up",
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const SignupPage()));
+                    },
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
@@ -112,11 +98,7 @@ class _LoginPageState extends State<LoginPage> {
       });
     } else {
       try {
-        userCredential = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: email, password: pass);
-        toast().toastmessage("Login successfully");
-        loading = false;
-        setState(() {});
+        userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: pass);
       } on FirebaseAuthException catch (error) {
         toast().toastmessage(error.message!);
         setState(() {
@@ -126,18 +108,16 @@ class _LoginPageState extends State<LoginPage> {
       if (userCredential != null) {
         String uid = userCredential.user!.uid;
 
-        DocumentSnapshot userData =
-            await FirebaseFirestore.instance.collection("users").doc(uid).get();
-        UserModel userModel =
-            UserModel.fromMap(userData.data() as Map<String, dynamic>);
+        DocumentSnapshot userData = await FirebaseFirestore.instance.collection("users").doc(uid).get();
+        UserModel userModel = UserModel.fromMap(userData.data() as Map<String, dynamic>);
         if (mounted) {
+          loading = false;
+          setState(() {});
+          toast().toastmessage("Login successfully");
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => HomePage(
-                        userModel: userModel,
-                        firebaseUser: userCredential!.user!,
-                      )));
+                  builder: (context) => HomePage(userModel: userModel, firebaseUser: userCredential!.user!)));
         }
       }
     }

@@ -17,15 +17,11 @@ class AccountInfoPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 25),
         child: Column(children: [
-          CircleAvatar(
-              radius: 55.r,
-              backgroundImage: NetworkImage(userModel.pic.toString())),
+          CircleAvatar(radius: 55.r, backgroundImage: NetworkImage(userModel.pic.toString())),
           gap,
           gap,
-          InfoItem(
-              fieldName: "Your name", fieldInfo: userModel.name.toString()),
-          InfoItem(
-              fieldName: "Your email", fieldInfo: userModel.email.toString()),
+          InfoItem(fieldName: "Your name", fieldInfo: userModel.name.toString()),
+          InfoItem(fieldName: "Your email", fieldInfo: userModel.email.toString()),
           //const InfoItem(fieldName: "Your Number", fieldInfo: ""),
           const Spacer(),
           Button(
@@ -49,7 +45,7 @@ class InfoItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 78.h,
+      height: 80.h,
       width: MediaQuery.of(context).size.width,
       margin: EdgeInsets.symmetric(vertical: 5.h),
       child: Column(
